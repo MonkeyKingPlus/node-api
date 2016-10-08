@@ -150,8 +150,6 @@ exports.updateAuthToken = function () {
 
 exports.verifyRememberMeToken = function () {
     return function (token, done, req) {
-        console.log("======")
-        console.log(token)
         var cookie = parseRememberMeCookie(token);
         if (!cookie) {
             return done(null, false);
