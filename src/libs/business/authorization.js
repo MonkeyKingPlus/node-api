@@ -141,7 +141,6 @@ exports.verifyAuthToken = function () {
 };
 
 exports.updateAuthToken = function () {
-    console.log("updateAuthToken")
     return function (user, done) {
         var authToken = issueUserAuthToken(user);
 
