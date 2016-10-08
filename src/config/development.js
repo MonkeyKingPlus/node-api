@@ -25,12 +25,22 @@ var config = {
         "authToken": {
             "name": "at",
             "options": {
-                "domain": "monkeyplus.com.dev",
+                "domain": "monkeyplus.com.local",
                 "path": "/",
                 "maxAge": timespan_year,
                 "httpOnly": false
             }
-        }
+        },
+        "rememberme": {
+            "name": "rm",
+            "options": {
+                "path": "/",
+                "httpOnly": true,
+                "maxAge": timespan_month,
+                "domain": "monkeyplus.com.local",
+                "comment": "one month"
+            }
+        },
     },
     "db": {
         "debug": false,
@@ -57,6 +67,16 @@ var config = {
                 type: 'console'
             }
         ]
+    },
+    "cache":"memory",
+    "caches": {
+        "memory": {
+            "name": "memory-cache",
+            "timeout": timespan_hour
+        }
+    },
+    "cacheKeys":{
+        "rememberme_token":"remembermetoken:%s:%s"
     }
 };
 

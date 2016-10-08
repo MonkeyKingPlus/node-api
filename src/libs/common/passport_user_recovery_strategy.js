@@ -152,7 +152,6 @@ Strategy.prototype.authenticate = function(req, options) {
     function authenticateSeries(index){
         if(index < self.configItems.length){
             var configItem = self.configItems[index];
-
             configItem.authenticate(req)
                 .then(function(data){
                     if(!data){

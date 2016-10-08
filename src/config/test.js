@@ -30,6 +30,16 @@ var config = {
                 "maxAge": timespan_year,
                 "httpOnly": false
             }
+        },
+        "rememberme": {
+            "name": "rm",
+            "options": {
+                "path": "/",
+                "httpOnly": true,
+                "maxAge": timespan_month,
+                "domain": "monkeyplus.com.dev",
+                "comment": "one month"
+            }
         }
     },
     "db": {
@@ -63,6 +73,16 @@ var config = {
                 category: 'service'
             }
         ]
+    },
+    "cache":"memory",
+    "caches": {
+        "memory": {
+            "name": "memory-cache",
+            "timeout": timespan_hour
+        }
+    },
+    "cacheKeys":{
+        "rememberme_token":"remembermetoken:%s:%s"
     }
 };
 

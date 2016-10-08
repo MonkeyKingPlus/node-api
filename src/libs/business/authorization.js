@@ -6,6 +6,7 @@ var dateformat = require("dateformat");
 var md5 = require("crypto-md5");
 
 var settings = require("../common/config");
+var cacheProvider = require("../common/cacheProvider")(settings.caches[settings.cache]);
 var helper = require('../common/helper');
 var logger = require('../common/logger')("authorize");
 var blockloginTimes = 10; //10次失败lock
@@ -55,6 +56,41 @@ function login(req, username, password) {
     return accountBL.login(username, password).fail(function (err) {
         throw err;
     });
+}
+
+function generateRememberMeCookie(loginName, identifier, token, authToken) {
+    var cookieKey = loginName + ":" + identifier + ":" + token + ":" + authToken;
+    return helper.encrypt(cookieKey);
+}
+
+function generateRememberMeCacheKey(loginName, identifier) {
+    return util.format(settings.cacheKeys.rememberme_token, loginName, identifier);
+}
+
+function parseRememberMeCookie(c) {
+    var cookie = null;
+
+    try {
+        cookie = helper.decrypt(c);
+    }
+    catch (err) {
+        //noop
+    }
+
+    if (!cookie) {
+        return null;
+    }
+
+    var arr = cookie.split(":");
+    if (arr.length !== 4) {
+        return null;
+    }
+    return {
+        loginName: arr[0],
+        identifier: arr[1],
+        token: arr[2],
+        authToken: arr[3]
+    };
 }
 
 exports.authenticate = function () {
@@ -110,6 +146,62 @@ exports.updateAuthToken = function () {
         var authToken = issueUserAuthToken(user);
 
         return done(null, authToken);
+    };
+};
+
+exports.verifyRememberMeToken = function () {
+    return function (token, done, req) {
+        console.log("======")
+        console.log(token)
+        var cookie = parseRememberMeCookie(token);
+        if (!cookie) {
+            return done(null, false);
+        }
+        var cacheKey = generateRememberMeCacheKey(cookie.loginName, cookie.identifier);
+        cacheProvider.get(cacheKey)
+            .then(function (data) {
+                if (!data) {
+                    return done(null, false);
+                }
+
+                if (data.token !== cookie.token) {
+                    cacheProvider.del(cacheKey);
+                    return done(null, false);
+                }
+
+                return accountBL.getUserInfo(data.userId)
+                    .then(function (user) {
+                        if (!user) {
+                            return done(null, false);
+                        }
+
+                        return done(null, getSessionUserData(user));
+                    });
+            }).fail(function (err) {
+            return done(err);
+        });
+    };
+};
+
+exports.updateRememberMeToken = function () {
+    return function (user, done) {
+        var identifier = helper.randomStr(6);
+        var token = helper.randomStr(6);
+        var data = {
+            userId: user.userId,
+            token: token,
+            generateTime: new Date(),
+            type: 'update'
+        };
+
+        var remembermeCookie = generateRememberMeCookie(user.loginName, identifier, token, user.authToken);
+        var cacheKey = generateRememberMeCacheKey(user.loginName, identifier);
+        cacheProvider.set(cacheKey, data)
+            .then(function () {
+                return done(null, remembermeCookie);
+            }).fail(function (err) {
+            return done(err);
+        });
     };
 };
 
