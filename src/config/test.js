@@ -65,7 +65,7 @@ var config = {
         "appenders": [
             {
                 type: 'dateFile',
-                filename: 'logs/log_pattern',
+                filename: 'logs/log_',
                 pattern: "yyyyMMdd.log",
                 alwaysIncludePattern:true,
                 backups: 3,
