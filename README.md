@@ -15,6 +15,6 @@ Building a RESTful API Using Node and Express 4
 
 Test your API using [Postman](https://chrome.google.com/webstore/detail/postman-rest-client-packa/fhbjgbiflinjbdggehcddcbncdddomop)
 
-    Service will running at port 4000 as default
+    Service will running at port 3000 as default
     
     Please visit http://localhost:3000/v1 on browser or postman
