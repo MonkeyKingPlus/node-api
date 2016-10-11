@@ -14,5 +14,5 @@ module.exports = function (app) {
 };
 
 router.get("/", function(req, res, next) {
-    res.send("Hello MKP!");
+    res.send("Hello express!");
 });

@@ -46,7 +46,7 @@ app.use(libs.middleware.express_extender());
 app.use(function(req, res, next){
     res.header("Access-Control-Allow-Origin", "*");
     res.header("access-control-allow-methods", "GET, POST");
-    res.header("Access-Control-Allow-Headers", "X-Requested-With, x-user-agent, x-deviceid, x-mkp-authentication");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, x-mkp-authentication");
     next();
 });
 
@@ -85,7 +85,7 @@ process.on('uncaughtException', function (err) {
     logger.error("uncaughtException:"+ err.stack);
 });
 
-var server = app.listen(config.servicePort, function () {
+var server = app.listen(config.port, function () {
     logger.info('Express server listening on port ' + server.address().port);
 });
 

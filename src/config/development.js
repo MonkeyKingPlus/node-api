@@ -16,8 +16,6 @@ var timespan_second = 1000,
 var config = {
     "root": rootPath,
     "port": 3000,
-    "servicePort": 4000,
-    "mobilePort": 5000,
     "app": {
         "name": 'monkeyplus'
     },
