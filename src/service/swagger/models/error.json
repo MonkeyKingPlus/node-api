@@ -1,4 +1,4 @@
-module.exports = {
+{
     "Error": {
         "type": "object",
         "properties": {
@@ -14,4 +14,4 @@ module.exports = {
             }
         }
     }
-};
+}

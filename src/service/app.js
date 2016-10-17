@@ -25,7 +25,7 @@ app.enable('trust proxy');
 
 var env = process.env.NODE_ENV || 'development';
 global.ENV = app.locals.ENV = env;
-global.ENV_DEVELOPMENT =app.locals.ENV_DEVELOPMENT = env == 'development';
+global.ENV_DEVELOPMENT = app.locals.ENV_DEVELOPMENT = env == 'development';
 
 app.use(timeout('90s'));
 app.use(express.static(config.root + '/service/public', {
@@ -33,49 +33,18 @@ app.use(express.static(config.root + '/service/public', {
     etag: false
 }));
 
-if(global.ENV == "development"){
-    var os = require('os');
-    var hostName=os.hostname();
-    var swaggerJSDoc = require('swagger-jsdoc');
-    var swaggerDefinition = {
-        info: {
-            title: 'MonkeyPlus Apis',
-            version: '1.0.0',
-            description: 'support monkey plus projects'
-        },
-        host: hostName + ":" + config.port,
-        basePath: '/v1',
-        schemes: [
-            "http",
-            "https"
-        ],
-        produces: [//Response content types
-            "application/json"
-        ],
-        consumes:[ //Parameter content types
-            "application/json"
-        ],
-        definitions:require(config.root + '/service/models/index.js')
-    };
-
-    // Options for the swagger docs
-    var jsDocOptions = {
-        // Import swaggerDefinitions
-        swaggerDefinition: swaggerDefinition,
-        // Path to the API docs
-        apis: glob.sync(config.root + '/service/controllers/**/*.js')
-    };
-    app.get('/api-docs.json', function(req, res) {
-        res.setHeader('Content-Type', 'application/json');
-        res.send(swaggerJSDoc(jsDocOptions));
-    });
-
-    app.use(express.static(config.root + '/service/swagger'));
+if (global.ENV == "development") {
+    require("./swagger")(app,
+        {
+            port: config.port,
+            basePath: "/v1",
+            apis: glob.sync(config.root + '/service/controllers/**/*.js')
+        });
 }
 
 app.use(compression());
 app.use(bodyParser.json({limit: '5mb'}));
-app.use(bodyParser.urlencoded({limit: '5mb',extended: true}));
+app.use(bodyParser.urlencoded({limit: '5mb', extended: true}));
 app.use(expressValidator());
 libs.common.validatorExtender.extend(expressValidator.validator);
 app.use(cookieParser());
@@ -84,7 +53,7 @@ app.use(methodOverride());
 
 app.use(libs.middleware.express_extender());
 
-app.use(function(req, res, next){
+app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("access-control-allow-methods", "GET, POST");
     res.header("Access-Control-Allow-Headers", "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, x-mkp-authentication");
@@ -95,8 +64,8 @@ app.use(passport.initialize());
 
 app.use(passport.authenticate('recovery-me'));
 var authTokenHeaderConfigItem = userRecoveryStrategy.generateHeaderConfigItem("x-mkp-authentication",
-                                                                    auth.verifyAuthToken(),
-                                                                    auth.updateAuthToken());
+    auth.verifyAuthToken(),
+    auth.updateAuthToken());
 passport.use(new userRecoveryStrategy([authTokenHeaderConfigItem]));
 
 passport.use(new LocalStrategy({
@@ -109,21 +78,21 @@ passport.deserializeUser(auth.deserializeUser());
 
 var controllers = glob.sync(config.root + '/service/controllers/**/*.js');
 controllers.forEach(function (controller) {
-  require(controller)(app);
+    require(controller)(app);
 });
 
 
 app.use(function (req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
 });
 
 app.use(middleware.errorhandler_express(logger));
 
 // error handlers
 process.on('uncaughtException', function (err) {
-    logger.error("uncaughtException:"+ err.stack);
+    logger.error("uncaughtException:" + err.stack);
 });
 
 var server = app.listen(config.port, function () {

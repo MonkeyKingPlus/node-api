@@ -1,7 +1,9 @@
+var glob = require('glob-all');
 var models = {};
+
 var separateModels = [
-    require('./account.js'),
-    require('./error.js')
+    require('./account.json'),
+    require('./error.json')
 ];
 
 function transferModels() {
@@ -12,6 +14,5 @@ function transferModels() {
     }
 }
 transferModels();
-
 
 module.exports = models;
