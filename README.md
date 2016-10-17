@@ -61,6 +61,14 @@ Building a RESTful API Using Node and Express 4
 
 ####How to use it with express
 ```javascript
+path = require('path')
+
+var express = require('express');
+
+var config = {
+    port: process.env.NODE_ENV, // your service running port
+    root: path.normalize(__dirname + '/..') // your project root path
+};
 var app = express();
 if (global.ENV == "development") {
     require("./swagger")(app,

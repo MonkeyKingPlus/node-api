@@ -18,7 +18,6 @@ var logger = libs.common.logger("service");
 var timeout = require('connect-timeout');
 var app = express();
 
-
 app.disable('x-powered-by');
 app.disable('etag');
 app.enable('trust proxy');
