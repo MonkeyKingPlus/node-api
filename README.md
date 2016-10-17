@@ -32,7 +32,7 @@ Building a RESTful API Using Node and Express 4
 
 ####How to document the API
 
-The API can now be documented in JSDoc-style with swagger spec in [YAML](http://swagger.io/swagger-editor/).
+The API can now be documented in [JSDoc-style](http://usejsdoc.org/about-getting-started.html) with swagger spec in [YAML](http://swagger.io/swagger-editor/).
 ```javascript
 /**
  * @swagger
