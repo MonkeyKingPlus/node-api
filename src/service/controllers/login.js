@@ -1,3 +1,10 @@
+/**
+ * @swagger
+ * tags:
+ *   - name: Login
+ *     description: login services
+ */
+
 var express = require('express');
 var loginRouter = express.Router();
 var passport = require("passport");
@@ -12,6 +19,32 @@ module.exports = function (app) {
     app.use('/v1/login', loginRouter);
 };
 
+/**
+ * @swagger
+ * /login:
+ *   post:
+ *     description: Login to the application
+ *     tags: [Login]
+ *     parameters:
+ *       - name: body
+ *         description: User login model
+ *         in: body
+ *         required: true
+ *         schema:
+ *           type: object
+ *           $ref: '#/definitions/User'
+ *     responses:
+ *       default:
+ *         description: error model
+ *         schema:
+ *           type: object
+ *           $ref: '#/definitions/Error'
+ *       200:
+ *         description: user info
+ *         schema:
+ *           type: object
+ *           $ref: '#/definitions/User'
+ */
 loginRouter.post("/", function (req, res, next) {
     req.checkBody("LoginName", "用户名不能为空").notEmpty();
     req.checkBody("Password", "密码不能为空").notEmpty();

@@ -72,6 +72,7 @@
     "gulp-zip": "^3.0.2",
     "progress": "^1.1.8",
     "scp2": "^0.2.2",
+    "swagger-jsdoc": "^1.7.0",
     "through2": "^0.6.5",
     "through2-concurrent": "^1.0.0"
   }

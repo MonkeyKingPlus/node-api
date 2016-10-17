@@ -32,6 +32,47 @@ app.use(express.static(config.root + '/service/public', {
     maxAge: global.ENV_DEVELOPMENT ? 0 : 30 * 24 * 3600 * 1000,
     etag: false
 }));
+
+if(global.ENV == "development"){
+    var os = require('os');
+    var hostName=os.hostname();
+    var swaggerJSDoc = require('swagger-jsdoc');
+    var swaggerDefinition = {
+        info: {
+            title: 'MonkeyPlus Apis',
+            version: '1.0.0',
+            description: 'support monkey plus projects'
+        },
+        host: hostName + ":" + config.port,
+        basePath: '/v1',
+        schemes: [
+            "http",
+            "https"
+        ],
+        produces: [//Response content types
+            "application/json"
+        ],
+        consumes:[ //Parameter content types
+            "application/json"
+        ],
+        definitions:require(config.root + '/service/models/index.js')
+    };
+
+    // Options for the swagger docs
+    var jsDocOptions = {
+        // Import swaggerDefinitions
+        swaggerDefinition: swaggerDefinition,
+        // Path to the API docs
+        apis: glob.sync(config.root + '/service/controllers/**/*.js')
+    };
+    app.get('/api-docs.json', function(req, res) {
+        res.setHeader('Content-Type', 'application/json');
+        res.send(swaggerJSDoc(jsDocOptions));
+    });
+
+    app.use(express.static(config.root + '/service/swagger'));
+}
+
 app.use(compression());
 app.use(bodyParser.json({limit: '5mb'}));
 app.use(bodyParser.urlencoded({limit: '5mb',extended: true}));
@@ -88,4 +129,3 @@ process.on('uncaughtException', function (err) {
 var server = app.listen(config.port, function () {
     logger.info('Express server listening on port ' + server.address().port);
 });
-

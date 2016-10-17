@@ -19,7 +19,7 @@ var deployConfig = {
                 host: 'ec2-54-249-7-123.ap-northeast-1.compute.amazonaws.com',
                 port: 22,
                 username: 'ec2-user',
-                privateKey: fs.readFileSync('./monkeyplus.pem'),
+                //privateKey: fs.readFileSync('./monkeyplus.pem'),
                 readyTimeout: 200000
             }
         }],
@@ -30,22 +30,14 @@ var deployConfig = {
     production: {
         servers: [{
             sshConfig: {
-                host: '10.252.133.223',
+                host: 'ec2-54-249-7-123.ap-northeast-1.compute.amazonaws.com',
                 port: 22,
-                username: 'sotaoadmin',
-                password: 'Sotao@2015',
-                readyTimeout: 200000
-            }
-        }, {
-            sshConfig: {
-                host: '10.168.45.93',
-                port: 22,
-                username: 'sotaoadmin',
-                password: 'Sotao@2015',
+                username: 'ec2-user',
+                //privateKey: fs.readFileSync('./monkeyplus.pem'),
                 readyTimeout: 200000
             }
         }],
-        deployPath: "/home/sotaoadmin/sotao-website",
+        deployPath: "/home/ec2-user/mkp",
         deploySrc: [],
         deployServers: []
     }
@@ -68,7 +60,7 @@ function getEnvConf(type) {
 
 //develop service
 gulp.task('s', function () {
-    nodemon({
+        nodemon({
         script: 'service/app.js',
         ext: 'js',
         ignore: ['dist/**', 'node_modules/**', 'website/controllers/**/*.js', 'mobilesite/controllers/**/*.js']

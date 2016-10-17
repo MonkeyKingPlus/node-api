@@ -1,3 +1,10 @@
+/**
+ * @swagger
+ * tags:
+ *   - name: Account
+ *     description: account services
+ */
+
 var express = require('express');
 var router = express.Router();
 var routerV2 = express.Router();
@@ -17,6 +24,21 @@ module.exports = function (app) {
     app.use('/v1/account', router);
     app.use('/v2/account', router,routerV2);
 };
+
+/**
+ * @swagger
+ * /account/{id}:
+ *   get:
+ *     description: Get user info
+ *     tags: [Account]
+ *     parameters:
+ *       - name: id
+ *         description: UserId.
+ *         in: path
+ *         required: true
+ *         type: integer
+ *         format: int32
+ */
 
 /*V1版本,获取账户信息,可通过v1/account/id 或者 v2/account/id 来访问*/
 router.get("/:id", requireAuth, function (req, res, next) {
