@@ -30,7 +30,49 @@ Building a RESTful API Using Node and Express 4
     basePath | the base path of your service, **'/'** as default
     apis | files that contain the jsdoc information for swagger,**[]** as default
 
-#### Define your models if have
+####How to document the API
+
+The API can now be documented in JSDoc-style with swagger spec in YAML.
+```javascript
+/**
+ * @swagger
+ * tags:
+ *   - name: Login
+ *     description: login services
+ */
+ 
+/**
+ * @swagger
+ * /login:
+ *   post:
+ *     description: Login to the application
+ *     tags: [Login]
+ *     parameters:
+ *       - name: body
+ *         description: User login model
+ *         in: body
+ *         required: true
+ *         schema:
+ *           type: object
+ *           $ref: '#/definitions/User'
+ *     responses:
+ *       default:
+ *         description: error model
+ *         schema:
+ *           type: object
+ *           $ref: '#/definitions/Error'
+ *       200:
+ *         description: user info
+ *         schema:
+ *           type: object
+ *           $ref: '#/definitions/User'
+ */
+loginRouter.post("/", function (req, res, next) {
+    res.send("login");
+});
+```
+
+####Re-using Model Definitions
 1.You have to define your models under path : **/service/swagger/models/**
 
 2.Your models should be defined as json, ex. ***account.json***. Content refers to [**OpenAPI Specification**](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md)
@@ -51,7 +93,7 @@ Building a RESTful API Using Node and Express 4
     }
 }
 ```
-3.Add your model to **separateModels** in ***index.js***, ex.
+3.Add models to **separateModels** in ***index.js***, ex.
 ```javascript
     var separateModels = [
         ... // other models
@@ -79,3 +121,4 @@ if (global.ENV == "development") {
         });
 }
 ```
+

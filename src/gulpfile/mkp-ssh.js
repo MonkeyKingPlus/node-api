@@ -1,6 +1,4 @@
-        /**
- * Created by flyerabc on 16/6/15.
- */
+
 var path = require('path')
     ,gulp = require('gulp')
     ,gutil = require('gulp-util')
