@@ -34,21 +34,21 @@ Building a RESTful API Using Node and Express 4
 1. You have to define your models under path : **/service/swagger/models/**
 2. Your models should be defined as json, ex. ***account.json***
 ```javascript
-    {
-        "User": {
-            "type": "object",
-            "properties": {
-                "LoginName": {
-                    "type": "string",
-                    "description": "user login name"
-                },
-                "Password": {
-                    "type": "string",
-                    "description": "password"
-                }
+{
+    "User": {
+        "type": "object",
+        "properties": {
+            "LoginName": {
+                "type": "string",
+                "description": "user login name"
+            },
+            "Password": {
+                "type": "string",
+                "description": "password"
             }
         }
     }
+}
 ```
 
 3. Add your model to **separateModels** in ***index.js***, ex.
