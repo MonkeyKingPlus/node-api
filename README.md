@@ -28,7 +28,7 @@ Building a RESTful API Using Node and Express 4
     --- | -----------
     port | port of your service, **3000** as default
     basePath | the base path of your service, **'/'** as default
-    apis | files that contains the jsdoc information for swagger,**[]** as default
+    apis | files that contain the jsdoc information for swagger,**[]** as default
 
 #### Define your models if have
 1. You have to define your models under path : **/service/swagger/models/**
