@@ -31,8 +31,8 @@ Building a RESTful API Using Node and Express 4
     apis | files that contain the jsdoc information for swagger,**[]** as default
 
 #### Define your models if have
-1. You have to define your models under path : **/service/swagger/models/**
-2. Your models should be defined as json, ex. ***account.json***. Content refers to [**OpenAPI Specification**](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md)
+1.You have to define your models under path : **/service/swagger/models/**
+2.Your models should be defined as json, ex. ***account.json***. Content refers to [**OpenAPI Specification**](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md)
 ```javascript
 {
     "User": {
@@ -50,7 +50,7 @@ Building a RESTful API Using Node and Express 4
     }
 }
 ```
-3. Add your model to **separateModels** in ***index.js***, ex.
+3.Add your model to **separateModels** in ***index.js***, ex.
 ```javascript
     var separateModels = [
         ... // other models
