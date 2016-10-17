@@ -75,7 +75,7 @@ loginRouter.post("/", function (req, res, next) {
 ####Re-using Model Definitions
 1.You have to define your models under path : **/service/swagger/models/**
 
-2.Your models should be defined as json, ex. ***account.json***. Content refers to [**OpenAPI Specification**](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md)
+2.Your models should be defined as json, ex. ***account.json***.
 ```javascript
 {
     "User": {
@@ -100,6 +100,8 @@ loginRouter.post("/", function (req, res, next) {
         require('./account.json')
     ];
 ```
+
+For more details, please refer to [**OpenAPI Specification**](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md)
 
 ####How to use it with express
 ```javascript
