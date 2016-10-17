@@ -61,7 +61,7 @@ Building a RESTful API Using Node and Express 4
 
 ####How to use it with express
 ```javascript
-path = require('path')
+var path = require('path')
 
 var express = require('express');
 
