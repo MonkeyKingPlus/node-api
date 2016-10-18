@@ -2,7 +2,7 @@
 Building a RESTful API Using Node and Express 4
 
 ## Requirement
-- Node and npm
+- Node , npm and gulp
 
 ## Installation
 
