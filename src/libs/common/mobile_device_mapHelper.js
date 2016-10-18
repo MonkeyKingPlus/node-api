@@ -77,10 +77,6 @@ exports.getDeviceModel = function(clientInfo,userAgent){
         return mapIPhone(userAgent);
     }else if(/\s*Android/ig.test(clientInfo)){
         return mapAndroid(userAgent);
-    }else if(/Sotao\s*Web/ig.test(clientInfo)){
-        return "sotao.com";
-    }else if(/Sotao\s*CMS/ig.test(clientInfo)){
-        return "搜淘网";
     }
 };
 //exports.getiPhoneDeviceModel = mapIPhone;

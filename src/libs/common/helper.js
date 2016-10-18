@@ -15,74 +15,6 @@ var mime = require("mime");
 
 _.extend(exports, enums);
 
-exports.uploadBufferDataToOSS = function (buffer, bucketName, ossFileName) {
-    var deferred = Q.defer();
-    var mimetype = mime.lookup(ossFileName);
-
-    oss.putObject({
-            Bucket: bucketName,
-            Key: ossFileName,
-            Body: buffer,
-            ContentType: mimetype,
-            CacheControl: "max-age=31536000"
-        },
-        function (err, data) {
-            if (err) {
-                deferred.reject(err);
-                return;
-            }
-
-            deferred.resolve(ossFileName);
-        });
-
-    return deferred.promise;
-};
-
-exports.uploadFileToOSS = function (localFilePath, bucketName, ossFileName) {
-    var deferred = Q.defer();
-    var mimetype = mime.lookup(ossFileName);
-
-    fs.readFile(localFilePath, function (err, data) {
-        if (err) {
-            deferred.reject(err);
-            return;
-        }
-        oss.putObject({
-                Bucket: bucketName,
-                Key: ossFileName,
-                Body: data,
-                ContentType: mimetype,
-                CacheControl: "max-age=31536000"
-            },
-            function (err, data) {
-                if (err) {
-                    deferred.reject(err);
-                    return;
-                }
-
-                deferred.resolve(ossFileName);
-            });
-    });
-
-    return deferred.promise;
-};
-
-exports.resizeImage = function (url, size) {
-    var map = config.business.imageSizeMapping;
-    if (!map[size]) {
-        throw new Error("Invalid size [" + size + "]");
-    }
-    if (!url) return "";
-    var index = url.indexOf("?");
-    if (index > 0) {
-        url = url.substring(0, index) + map[size] + url.substring(index);
-    }
-    else {
-        url += map[size];
-    }
-    return url;
-};
-
 exports.promiseLimit = function (values, max, iterator) {
     max = max - 1;
     var deferred = Q.defer();
@@ -312,13 +244,6 @@ exports.isEqualStringIgnoreCase = function (strA, strB) {
     return result;
 };
 
-exports.removeHtml = function (text) {
-    if (text) {
-        return text.replace(/(<([^>]+)>)/ig, "");
-    }
-    return text;
-};
-
 exports.parseQueryString = function (queryString) {
     if (!queryString) {
         return null;
@@ -377,42 +302,6 @@ function buildUrl(){
         url = util.format.apply(util, params);
     }
     return url;
-};
-
-exports.goToMobile = function () {
-    var baseUrl = config.app["mobileSiteUrl"];
-    return baseUrl + buildUrl.apply(null, Array.prototype.slice.call(arguments, 0));
-};
-
-exports.buildImageUrl = function (fileName, cdnName) {
-    if (fileName && /^(http:|https:)/i.test(fileName)) {
-        return fileName;
-    }
-    if (!cdnName) {
-        cdnName = "cdnImageUrl";
-    }
-    if (fileName) {
-        return urlUtil.resolve(config.app[cdnName], fileName);
-    } else {
-        return null;
-    }
-};
-
-exports.buildESFImageUrl = function (fileName) {
-    return exports.buildImageUrl(fileName, "esfCDNUrl");
-};
-
-exports.buildMediaUrl = function (fileName) {
-    var url = config.app["cdnMediaUrl"];
-    if (!url) {
-        throw new Error("Invalid cdn Media, please check config file!");
-    }
-    if (fileName) {
-        return urlUtil.resolve(url, fileName);
-    } else {
-        return null;
-    }
-
 };
 
 var pagerHelper = {
@@ -478,57 +367,8 @@ var pagerHelper = {
     }
 };
 
-var wapPageHelper = {
-    buildPageInfo : function(totalPage, currentPage, url){
-        var result =  {
-            PrevButtonEnable: currentPage != 1,
-            NextButtonEnable: currentPage != totalPage,
-            CurrentPage : currentPage,
-            TotalPage : totalPage
-        };
-
-        if(result.PrevButtonEnable){
-            result.PrevPageUrl = exports.updateUrlParameter(url, "page", currentPage - 1);
-        }
-
-        if(result.NextButtonEnable){
-            result.NextPageUrl = exports.updateUrlParameter(url, "page", currentPage + 1);
-        }
-
-        return result;
-
-    },
-    buildPageInfoWithListInfo : function(listInfo, url){
-        if (!listInfo || !url) {
-            return null;
-        }
-        var totalPage = Math.ceil(listInfo.TotalCount / listInfo.ListCount);
-
-        if(totalPage <= 1){
-            return null;
-        }
-
-        return this.buildPageInfo(totalPage, listInfo.PageNumber, url);
-    }
-};
-
 exports.buildNumPagerDataContext = pagerHelper.buildNumPagerDataContext;
 exports.buildNumPagerDataContextWithListInfo = pagerHelper.buildNumPagerDataContextWithListInfo;
-
-exports.buildWapPageInfoWithListInfo = wapPageHelper.buildPageInfoWithListInfo.bind(wapPageHelper);
-
-exports.buildInfiniteScrollPageInfo = function (listInfo, url) {
-    var pageNumber = Math.ceil(listInfo.TotalCount / listInfo.ListCount);
-    var pagingInfo = [];
-    for (var i = 0; i < pageNumber; i++) {
-        pagingInfo.push({
-            Url: exports.updateUrlParameter(url, "page", i + 1),
-            PageNumber: (i + 1),
-            IsNextPage: (i == listInfo.PageNumber)
-        })
-    }
-    return pagingInfo;
-};
 
 exports.buildSuccessResult = function (data, message) {
     return {
@@ -557,29 +397,6 @@ exports.buildListInfo = function (pageIndex, pageSize, totalCount, url) {
     };
 
     return listInfo;
-};
-
-exports.buildSlidePageInfo = function (pageIndex, pageSize, total, url, type) {
-    pageIndex = parseInt(pageIndex);
-    var pageCount = Math.ceil(total / pageSize);
-    var urlResult = url;
-    if (url.indexOf("?") > 0) {
-        urlResult += "&page=";
-    }
-    else {
-        urlResult += "?page=";
-    }
-    if (pageIndex >= pageCount) return {
-        Type: type,
-        Display: 'none'
-        , Url: urlResult + "1"
-    };
-    urlResult += pageIndex + 1;
-    return {
-        Type: type,
-        Url: urlResult
-    };
-
 };
 
 function formatMoney(amount) {
@@ -635,38 +452,6 @@ var regexStaticRes = /\.(jpg|jpeg|png|gif|js|css|eot|woff|ttf|svg|htc)|faq.html$
 
 exports.isStaticResUrl = function (url) {
     return regexStaticRes.test(url);
-};
-
-exports.validationOrderInfo = function (order) {
-    var result = {
-        isSuccess: true,
-        message: ""
-    };
-
-    if (!order.BuyerName || order.BuyerName.length == 0) {
-        result.isSuccess = false;
-        result.message = "请填写认购人姓名";
-        return result;
-    }
-
-    if (!exports.isCellPhoneValid(order.CellPhone)) {
-        result.isSuccess = false;
-        result.message = "电话号码无效";
-        return result;
-    }
-
-    if (!exports.isIdentityCardValid(order.IDNumber.toUpperCase())) {
-        result.isSuccess = false;
-        result.message = "身份证号码无效";
-        return result;
-    }
-
-    //if (!order.IDImageName || order.IDImageName.length == 0) {
-    //    result.isSuccess = false;
-    //    result.message = "请上传认购人身份证扫描件";
-    //    return result;
-    //}
-    return result;
 };
 
 exports.maskString = function (str) {
