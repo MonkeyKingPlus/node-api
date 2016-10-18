@@ -22,9 +22,7 @@
     "express-validator": "~2.3.0",
     "glob": "~5.0.3",
     "glob-all": "^3.0.1",
-    "grunt": "^0.4.5",
     "ipip": "^1.0.6",
-    "jstoxml": "^0.2.3",
     "keyword-filter": "^0.5.0",
     "lodash": "^3.7.0",
     "log4js": "^0.6.25",
@@ -45,7 +43,6 @@
     "underscore": "^1.6.0",
     "useragent": "^2.0.9",
     "xml": "^1.0.0",
-    "xml2json": "^0.8.2",
     "yargs": "^3.7.1"
   },
   "devDependencies": {
