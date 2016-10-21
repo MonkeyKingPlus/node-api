@@ -11,6 +11,10 @@ module.exports = function(){
             res.clearCookie(cookieConfig.name, cookieConfig.options);
         };
 
+        req.getOpenID = function(){
+            return this.cookies["openid"];
+        };
+
         req.queryValue = function(key) {
             for (var k in this.query) {
                 if (k.toLowerCase() === key.toLowerCase()) {

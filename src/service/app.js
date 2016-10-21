@@ -49,7 +49,6 @@ libs.common.validatorExtender.extend(expressValidator.validator);
 app.use(cookieParser());
 app.use(methodOverride());
 
-
 app.use(libs.middleware.express_extender());
 
 app.use(function (req, res, next) {

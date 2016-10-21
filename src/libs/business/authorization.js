@@ -93,6 +93,20 @@ function parseRememberMeCookie(c) {
     };
 }
 
+/**
+ * @description 获取或者创建微信用户
+ * @param {object} req 网络请求
+ * @return {object} 系统用户信息
+ * @author steve
+ * @static
+ */
+function ensureWeiXinUserInfo(req){
+    var openID = req.getOpenID();
+    // 根据openid获取用户信息,如果有则返回;
+    // 如果没有,根据openid获取access_token,再用access_token获取微信用户信息;创建并绑定用户
+    return null;
+}
+
 exports.authenticate = function () {
     return function (req, username, password, done) {
         return login(req, username, password)
@@ -102,6 +116,23 @@ exports.authenticate = function () {
             .fail(function (err) {
                 done(err, null, {message: err.message});
             });
+    };
+};
+
+/**
+ * @description 对微信用户进行授权
+ * @returns {Function}
+ */
+exports.authenticateWeiXin = function(){
+    return function(req, done){
+        return ensureWeiXinUserInfo(req)
+            .then(function (user) {
+                done(null, user);
+            })
+            .fail(function (err) {
+                done(err, null, { message: err.message });
+            });
+
     };
 };
 

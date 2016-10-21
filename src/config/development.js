@@ -78,4 +78,19 @@ var config = {
     }
 };
 
+var weixinConfigs = [
+    {
+        name: "weixin",
+        appID: "wxc1fdd55548b1344e",
+        appsecret: "3f86e21bc033f2db51ccee6c40735ee7",
+        redirectUri: "http://ec2-54-249-7-123.ap-northeast-1.compute.amazonaws.com/"
+    }
+];
+
+config.weixinConfigs = weixinConfigs;
+
+weixinConfigs.forEach(function(weixinConfig){
+    config[weixinConfig.name] = weixinConfig;
+});
+
 module.exports = config;

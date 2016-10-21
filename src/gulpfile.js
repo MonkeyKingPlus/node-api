@@ -4,6 +4,7 @@ var gulp = require('gulp'),
     wrap = require('gulp-wrap'),
     declare = require('gulp-declare'),
     path = require("path"),
+    os = require("os"),
     fs = require("fs"),
     argv = require('yargs').argv,
     zip = require('gulp-zip'),
@@ -19,7 +20,7 @@ var deployConfig = {
                 host: 'ec2-54-249-7-123.ap-northeast-1.compute.amazonaws.com',
                 port: 22,
                 username: 'ec2-user',
-                //privateKey: fs.readFileSync('./monkeyplus.pem'),
+                privateKey: fs.readFileSync(path.join(os.homedir(),'.ssh/monkeyplus')),
                 readyTimeout: 200000
             }
         }],
@@ -33,7 +34,7 @@ var deployConfig = {
                 host: 'ec2-54-249-7-123.ap-northeast-1.compute.amazonaws.com',
                 port: 22,
                 username: 'ec2-user',
-                //privateKey: fs.readFileSync('./monkeyplus.pem'),
+                privateKey: fs.readFileSync(path.join(os.homedir(),'.ssh/monkeyplus')),
                 readyTimeout: 200000
             }
         }],
@@ -63,7 +64,7 @@ gulp.task('s', function () {
         nodemon({
         script: 'service/app.js',
         ext: 'js',
-        ignore: ['dist/**', 'node_modules/**', 'website/controllers/**/*.js', 'mobilesite/controllers/**/*.js']
+        ignore: ['dist/**', 'node_modules/**']
     });
 });
 
