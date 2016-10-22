@@ -38,6 +38,7 @@
     "passport-local": "^1.0.0",
     "passport-remember-me": "0.0.1",
     "q": "^1.0.1",
+    "request": "^2.75.0",
     "require-dir": "^0.1.0",
     "underscore": "^1.6.0",
     "useragent": "^2.0.9",

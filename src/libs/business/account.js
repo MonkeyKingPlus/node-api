@@ -32,3 +32,11 @@ exports.login = function (loginName, password) {
 exports.getUserInfo = function (id) {
     return db.executeSqlOne(accountDb.getUserInfo, [id]);
 }
+
+exports.bindThirdPartUser = function(){
+
+}
+
+exports.createUser = function(){
+
+}

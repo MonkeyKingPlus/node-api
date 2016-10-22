@@ -22,12 +22,15 @@ router.get("/verify", function (req, res, next) {
     }
 });
 
-router.get("/getAuthAccessToken", function (req, res, next) {
-    weixin.getNormalAccessToken()
-        .then(function (token) {
-            res.json(helper.buildSuccessResult(token));
-        })
-        .fail(function (err) {
-            res.json(helper.buildErrorResult(err));
-        })
+router.get("/getAuthUrl", function (req, res, next) {
+    var url = weixin.getAuthUrlSync();
+    res.json(helper.buildSuccessResult(url));
+});
+
+router.get("/authCallback", function (req, res, next) {
+    console.log("========body=========")
+    console.log(req.body)
+    console.log("========query=========")
+    console.log(req.query)
+    res.json(helper.buildSuccessResult());
 });
