@@ -1,31 +1,27 @@
+var dateformat = require("dateformat");
+var md5 = require("crypto-md5");
+var uuid = require("node-uuid");
+
 var accountDb = require('../db_conf/db_account.js');
 var db = require('../common/db_mysql_q.js')();
 var businessError = require('../common/businesserror');
 var logger = require('../common/logger')("service");
 
-exports.test = function (id) {
-    return db.executeSql(accountDb.test, [id]);
-}
+function formatPassword(password, time) {
+    if (!password) {
+        return "";
+    }
+    var md5Hex = function (str) {
+        return md5(str, "hex");
+    };
 
-exports.insertTest = function (name) {
-    return db.executeSql(accountDb.insertTest, [name]);
-}
-
-exports.insertTestWillRollback = function (name) {
-    return db.executeTranPromise(accountDb.insertTest.db,
-        function (trans) {
-            return db.executeTran(trans, accountDb.insertTest, [name])
-                .then(function () {
-                    return db.executeTran(trans, accountDb.insertTestRollback, ["Transaction is not working when you see this message!"])
-                })
-        }
-    ).fail(function (err) {
-        logger.error(err);
-        throw new businessError("操作异常,数据已回滚")
-    })
+    var dateformatTmpl = "yyyy/m/d H:MM:ss";
+    //前台会对密码做一次md5处理，后台在这个基础上做两次md5，再加上时间戳做一次md5
+    return md5Hex(md5Hex(md5Hex(password)) + dateformat(time, dateformatTmpl)).toUpperCase();
 }
 
 exports.login = function (loginName, password) {
+    password = formatPassword(password);
     return db.executeSqlOne(accountDb.login, [loginName, password]);
 }
 
@@ -36,7 +32,6 @@ exports.getUserInfo = function (id) {
 exports.bindThirdPartUser = function () {
 
 }
-
 
 exports.getUserInfoByIdentifier = function (identifier, identityType) {
     return db.executeSqlOne(accountDb.getUserInfoByIdentifier, [identifier, identityType]);
@@ -52,6 +47,10 @@ exports.createUser = function (userInfo) {
             return db.executeTran(trans, accountDb.createUser, userInfo)
                 .then(function (result) {
                     userInfo.UserInfoID = result.insertId;
+                    if (userInfo.IsThirdParty) {
+                        userInfo.Credential = uuid.v4();
+                    }
+                    userInfo.Credential = formatPassword(userInfo.Credential);
                     return db.executeTran(trans, accountDb.bindUserAuth, userInfo);
                 })
                 .then(function () {
@@ -62,12 +61,4 @@ exports.createUser = function (userInfo) {
         logger.error(err);
         throw new businessError("用户创建不成功")
     });
-}
-
-/**
- * 绑定用户授权信息
- * @param userAuthInfo {object} 用户授权信息
- */
-exports.bindUserAuth = function (userAuthInfo) {
-    return db.executeSql(accountDb.bindUserAuth, userAuthInfo);
 }

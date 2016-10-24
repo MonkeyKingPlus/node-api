@@ -4,7 +4,7 @@ var sha1 = require('node-sha1');
 
 var restClient = require("./rest_client")();
 var appConfig = require("../common/config");
-
+var cacheProvider = require("../common/cacheProvider")(appConfig.caches.memory);
 
 var token = "qwe123QWEasdASD";
 
@@ -20,7 +20,7 @@ module.exports = function (config) {
         authorize_base: "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + config.appID + "&redirect_uri=%s&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect",
         normalToken: "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s",
         authToken: "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + config.appID + "&secret=" + config.appsecret + "&code=%s&grant_type=authorization_code",
-        user: "https://api.weixin.qq.com/cgi-bin/user/info?access_token=%s&openid=%s&lang=zh_CN",
+        user: "https://api.weixin.qq.com/sns/userinfo?access_token=%s&openid=%s",
         create_qrcode: "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=%s",
         //发送模板消息 API TOKEN
         sendTempMessage: "https://api.weixin.qq.com/cgi-bin/template/api_set_industry?access_token=%s",

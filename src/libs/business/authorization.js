@@ -6,7 +6,7 @@ var dateformat = require("dateformat");
 var md5 = require("crypto-md5");
 
 var settings = require("../common/config");
-var cacheProvider = require("../common/cacheProvider")(settings.caches[settings.cache]);
+var cacheProvider = require("../common/cacheProvider")(settings.caches.memory);
 var helper = require('../common/helper');
 var businessError = require('../common/businessError');
 var enums = require('../common/enums');
@@ -149,6 +149,7 @@ function ensureWeiXinUserInfo(req) {
                 Identifier: weixinUser.openid,
                 NickName: weixinUser.nickname,
                 Avatar: weixinUser.headimgurl,//TODO:将头像上传到自己的图片服务器,以免微信换头像后本地用户头像就找不到了
+                UnionId: weixinUser.unionid, //微信用户唯一ID,此字段可在多个APP之间共享用户信息
                 IdentityType: enums.identityType.weixin,
                 Status: enums.commonStatus.valid
             };
