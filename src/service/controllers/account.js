@@ -22,7 +22,7 @@ var requireAuth = libs.middleware.auth_service();
 
 module.exports = function (app) {
     app.use('/v1/account', router);
-    app.use('/v2/account', router,routerV2);
+    app.use('/v2/account', router, routerV2);
 };
 
 /**
@@ -52,7 +52,7 @@ router.get("/:id", requireAuth, function (req, res, next) {
 });
 
 /*V2版本新增接口,获取账户所有信息,可通过v2/account/full/id 来访问。v1/account/full/id 将导致404*/
-routerV2.get("/full/:id",requireAuth, function (req, res, next) {
+routerV2.get("/full/:id", requireAuth, function (req, res, next) {
     return Q().then(function () {
         return accountBL.test(req.params.id);
     }).then(function (data) {

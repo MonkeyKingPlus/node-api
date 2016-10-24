@@ -10,6 +10,8 @@ var LocalStrategy = require('passport-local').Strategy;
 
 var libs = require("../libs");
 var userRecoveryStrategy = libs.common.passport_user_recovery_strategy;
+var weixinStrategy = libs.common.passport_weixin_strategy;
+var weixin_user_initializer = libs.middleware.weixin_user_initializer;
 var config = libs.common.config;
 var helper = libs.common.helper;
 var middleware = libs.middleware;
@@ -54,7 +56,7 @@ app.use(libs.middleware.express_extender());
 app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("access-control-allow-methods", "GET, POST");
-    res.header("Access-Control-Allow-Headers", "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, x-mkp-authentication");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, x-mkp-authentication,x-weixin-code");
     next();
 });
 
@@ -65,6 +67,8 @@ var authTokenHeaderConfigItem = userRecoveryStrategy.generateHeaderConfigItem("x
     auth.verifyAuthToken(),
     auth.updateAuthToken());
 passport.use(new userRecoveryStrategy([authTokenHeaderConfigItem]));
+
+passport.use(new weixinStrategy(auth.authenticateWeiXin()));
 
 passport.use(new LocalStrategy({
     passReqToCallback: true,

@@ -33,10 +33,41 @@ exports.getUserInfo = function (id) {
     return db.executeSqlOne(accountDb.getUserInfo, [id]);
 }
 
-exports.bindThirdPartUser = function(){
+exports.bindThirdPartUser = function () {
 
 }
 
-exports.createUser = function(){
 
+exports.getUserInfoByIdentifier = function (identifier, identityType) {
+    return db.executeSqlOne(accountDb.getUserInfoByIdentifier, [identifier, identityType]);
+}
+
+/**
+ * 创建用户
+ * @param userInfo {object} 用户信息
+ */
+exports.createUser = function (userInfo) {
+    return db.executeTranPromise(accountDb.insertTest.db,
+        function (trans) {
+            return db.executeTran(trans, accountDb.createUser, userInfo)
+                .then(function (result) {
+                    userInfo.UserInfoID = result.insertId;
+                    return db.executeTran(trans, accountDb.bindUserAuth, userInfo);
+                })
+                .then(function () {
+                    return userInfo;
+                });
+        }
+    ).fail(function (err) {
+        logger.error(err);
+        throw new businessError("用户创建不成功")
+    });
+}
+
+/**
+ * 绑定用户授权信息
+ * @param userAuthInfo {object} 用户授权信息
+ */
+exports.bindUserAuth = function (userAuthInfo) {
+    return db.executeSql(accountDb.bindUserAuth, userAuthInfo);
 }

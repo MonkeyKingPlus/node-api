@@ -11,9 +11,9 @@ module.exports = function(){
             res.clearCookie(cookieConfig.name, cookieConfig.options);
         };
 
-        req.getOpenID = function(){
-            return this.cookies["openid"];
-        };
+        req.getWeixinCode = function(){
+            return req.headers["x-weixin-code"];
+        }
 
         req.queryValue = function(key) {
             for (var k in this.query) {

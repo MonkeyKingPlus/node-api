@@ -25,9 +25,9 @@ function doLog(start, sqlObj, inputParameters) {
 }
 
 function getConnectionConf(dbName) {
-    if(typeof dbName === 'string'){
-        return  dbConfigs[dbName][0];
-    }else{
+    if (typeof dbName === 'string') {
+        return dbConfigs[dbName][0];
+    } else {
         return dbName;
     }
 }
@@ -62,7 +62,7 @@ function closeConnection(connection) {
 function beginTransaction(dbName) {
     var deferred = Q.defer();
     openConnection(dbName).then(function (connection) {
-        connection.beginTransaction(function(err){
+        connection.beginTransaction(function (err) {
             if (err) {
                 closeConnection(connection);
                 deferred.reject(err);
@@ -122,7 +122,7 @@ function query(connection, sqlObj) {
     return deferred.promise;
 }
 
-function queryTran(tran,sqlObj){
+function queryTran(tran, sqlObj) {
     var deferred = Q.defer();
 
     var start = new Date();
@@ -140,15 +140,36 @@ function queryTran(tran,sqlObj){
     return deferred.promise;
 }
 
-function SqlClient() {}
+function buildSqlObjectValues(sqlObject, values) {
+    if (!values) {
+        return sqlObject;
+    }
 
-SqlClient.prototype.executeSql = function (sqlObj,values) {
+    if (values instanceof Array) {
+        return _.extend(sqlObject, {values: values});
+    }
+
+    sqlObject.values = [];
+    var parameters = sqlObject.inputParams;
+    if (parameters && parameters.length > 0) {
+        for (var i = 0; i < parameters.length; i++) {
+            sqlObject.sql = sqlObject.sql.replace('@' + parameters[i].name, '?');
+            sqlObject.values.push(values[parameters[i].name]);
+        }
+    }
+    return sqlObject;
+}
+
+function SqlClient() {
+}
+
+SqlClient.prototype.executeSql = function (sqlObj, values) {
     if (!sqlObj) {
         throw new Error("can not found sql key in sql config file.");
     }
 
     return openConnection(sqlObj.db).then(function (connection) {
-        return query(connection, _.extend(sqlObj,{values:values}));
+        return query(connection, buildSqlObjectValues(sqlObj, values));
     });
 };
 
@@ -168,7 +189,7 @@ SqlClient.prototype.executeTran = function (transaction, sqlObj, values) {
         throw new Error("can not found sql key in sql config file.");
     }
 
-    return queryTran(transaction, _.extend(sqlObj,{values:values}));
+    return queryTran(transaction, buildSqlObjectValues(sqlObj, values));
 };
 
 SqlClient.prototype.beginTran = beginTransaction;

@@ -54,10 +54,10 @@ loginRouter.post("/", function (req, res, next) {
         res.send(helper.buildErrorResult(4100, errors, helper.buildValidateErrorMessages(errors)));
     }
     else {
-        passport.authenticate('local', {session: false}, function (err, user,info) {
+        passport.authenticate('local', {session: false}, function (err, user, info) {
             if (err || !user) {
                 var message = "用户名或密码错误";
-                if(err instanceof BusinessError){
+                if (err instanceof BusinessError) {
                     message = err.message;
                 }
                 res.send(helper.buildErrorResult(4101, null, message));
@@ -65,9 +65,26 @@ loginRouter.post("/", function (req, res, next) {
             else {
                 var token = authorizeBL.issueUserAuthToken(user);
                 res.header("x-mkp-authentication", token);
-                res.issueMkpCookie(config.cookieKeys.authToken, token);
                 res.send(helper.buildSuccessResult(user, "登录成功"));
             }
         })(req, res, next);
     }
 });
+
+loginRouter.get("/weixin", function (req, res, next) {
+        passport.authenticate('weixin', {session: false}, function (err, user, info) {
+            if (err || !user) {
+                var message = "微信授权失败";
+                if (err instanceof BusinessError) {
+                    message = err.message;
+                }
+                res.send(helper.buildErrorResult(4101, null, message));
+            }
+            else {
+                var token = authorizeBL.issueUserAuthToken(user);
+                res.header("x-mkp-authentication", token);
+                res.send(helper.buildSuccessResult(user, "微信登录成功"));
+            }
+        })(req, res, next);
+    }
+);

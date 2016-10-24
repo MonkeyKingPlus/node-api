@@ -48,7 +48,22 @@ var config = {
                 "password": "monkey!123",
                 "host": "monkeyplus.cnk9uugfwjne.ap-northeast-1.rds.amazonaws.com",
                 "port": "3306",
-                "database": "monkeyplus",
+                "database": "MonkeyPlus",
+                "connectTimeout": 10000,
+                "dateStrings": true,
+                "connectionLimit": 10
+                //"ssl":{
+                //    "ca":fs.readFileSync(path.normalize(rootPath + '/monkeyplus.pem'))
+                //}
+            }
+        ],
+        "write": [
+            {
+                "user": "monkey",
+                "password": "monkey!123",
+                "host": "monkeyplus.cnk9uugfwjne.ap-northeast-1.rds.amazonaws.com",
+                "port": "3306",
+                "database": "MonkeyPlus",
                 "connectTimeout": 10000,
                 "dateStrings": true,
                 "connectionLimit": 10

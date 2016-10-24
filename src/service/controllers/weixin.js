@@ -22,6 +22,21 @@ router.get("/verify", function (req, res, next) {
     }
 });
 
+router.get('/getAccessToken', function (req, res, next) {
+    var code = req.getWeixinCode();
+    if (!code) {
+        res.send(helper.buildErrorResult("Invalid Code"));
+    } else {
+        weixin.getAccessToken(code)
+            .then(function (token) {
+                return weixin.getUserInfo(token.access_token, token.openid);
+            })
+            .then(function (userInfo) {
+
+            })
+    }
+});
+
 router.get("/getAuthUrl", function (req, res, next) {
     var url = weixin.getAuthUrlSync();
     res.json(helper.buildSuccessResult(url));

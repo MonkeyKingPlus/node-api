@@ -74,7 +74,7 @@ module.exports = function (config) {
                     throw err;
                 });
         },
-        verifyAuthToken: function (openid, access_token) {
+        verifyAuthToken: function (access_token, openid) {
             return restClient.get(util.format(API.verifyAuthToken, access_token, openid))
                 .then(function (response) {
                     var result = JSON.parse(response.body);
