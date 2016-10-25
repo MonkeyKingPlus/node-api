@@ -95,7 +95,7 @@ loginRouter.post("/weixin", function (req, res, next) {
  * @swagger
  * /login/thridparty:
  *   post:
- *     description: Login to the application with qq
+ *     description: Login to the application with qq/weibo
  *     tags: [Login]
  *     parameters:
  *       - name: body

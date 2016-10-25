@@ -1,15 +1,12 @@
-var glob = require('glob-all');
+var requireDir = require('require-dir');
 var models = {};
 
-var separateModels = [
-    require('./account.json'),
-    require('./error.json')
-];
+var separateModels = requireDir(__dirname);
 
 function transferModels() {
-    for (var i = 0; i < separateModels.length; i++) {
-        for (var key in separateModels[i]) {
-            models[key] = separateModels[i][key];
+    for (var key in separateModels) {
+        for (var key2 in separateModels[key]) {
+            models[key2] = separateModels[key][key2];
         }
     }
 }

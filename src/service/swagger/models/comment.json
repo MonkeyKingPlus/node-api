@@ -1,0 +1,31 @@
+{
+  "Comment": {
+    "type": "object",
+    "properties": {
+      "ArticleInfoID": {
+        "type": "integer",
+        "description": "文章基础表编号"
+      },
+      "CommentUserInfoID": {
+        "type": "integer",
+        "description": "评价用户基础表编号"
+      },
+      "Content": {
+        "type": "string",
+        "description": "评论内容"
+      },
+      "LikeCount": {
+        "type": "integer",
+        "description": "点赞数量"
+      },
+      "ChildCommentID": {
+        "type": "integer",
+        "description": "回复评论ID"
+      },
+      "InDate": {
+        "type": "string",
+        "description": "创建时间"
+      }
+    }
+  }
+}
