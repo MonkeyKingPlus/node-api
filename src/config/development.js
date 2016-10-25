@@ -38,7 +38,7 @@ var config = {
                 "domain": "monkeyplus.com.local",
                 "comment": "one month"
             }
-        },
+        }
     },
     "db": {
         "debug": false,
@@ -96,8 +96,8 @@ var config = {
 var weixinConfigs = [
     {
         name: "weixin",
-        appID: "wxc1fdd55548b1344e",
-        appsecret: "3f86e21bc033f2db51ccee6c40735ee7",
+        appID: "wx458c8642c3333940",
+        appsecret: "290cb6e5aa49bf5b090e48733773c0d7",
         redirectUri: "http://ec2-54-249-7-123.ap-northeast-1.compute.amazonaws.com/"
     }
 ];

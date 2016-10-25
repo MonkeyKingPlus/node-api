@@ -80,37 +80,37 @@ var config = {
                 type: 'dateFile',
                 filename: 'logs/log_',
                 pattern: "yyyyMMdd.log",
-                alwaysIncludePattern:true,
+                alwaysIncludePattern: true,
                 backups: 3,
                 maxLogSize: 1024,
                 category: 'service'
             }
         ]
     },
-    "cache":"memory",
+    "cache": "memory",
     "caches": {
         "memory": {
             "name": "memory-cache",
             "timeout": timespan_hour
         }
     },
-    "cacheKeys":{
-        "rememberme_token":"remembermetoken:%s:%s"
+    "cacheKeys": {
+        "rememberme_token": "remembermetoken:%s:%s"
     }
 };
 
 var weixinConfigs = [
     {
         name: "weixin",
-        appID: "wxc1fdd55548b1344e",
-        appsecret: "3f86e21bc033f2db51ccee6c40735ee7",
+        appID: "wx458c8642c3333940",
+        appsecret: "290cb6e5aa49bf5b090e48733773c0d7",
         redirectUri: "http://ec2-54-249-7-123.ap-northeast-1.compute.amazonaws.com/"
     }
 ];
 
 config.weixinConfigs = weixinConfigs;
 
-weixinConfigs.forEach(function(weixinConfig){
+weixinConfigs.forEach(function (weixinConfig) {
     config[weixinConfig.name] = weixinConfig;
 });
 

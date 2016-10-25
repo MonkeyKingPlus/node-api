@@ -6,7 +6,7 @@ module.exports = {
         sql: multiline(function () {
             /*
              SELECT
-                 B.ID AS UserID,
+                 B.ID,
                  A.Identifier,
                  A.IdentityType,
                  A.IsThirdParty,
@@ -24,7 +24,7 @@ module.exports = {
         sql: multiline(function () {
             /*
              SELECT
-             B.ID AS UserID,
+             B.ID,
              A.Identifier,
              A.IdentityType,
              A.IsThirdParty,
@@ -43,7 +43,7 @@ module.exports = {
         sql: multiline(function () {
             /*
              SELECT
-             B.ID AS UserID,
+             B.ID,
              A.Identifier,
              A.IdentityType,
              A.IsThirdParty,
