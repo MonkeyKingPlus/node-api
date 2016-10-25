@@ -1,9 +1,9 @@
 var util = require('util');
-var os = require("os");
 
 var Q = require("q");
 var dateformat = require("dateformat");
 var md5 = require("crypto-md5");
+var _ = require('underscore');
 
 var settings = require("../common/config");
 var cacheProvider = require("../common/cacheProvider")(settings.caches.memory);
@@ -18,10 +18,7 @@ var accountBL = require('./account.js');
 var weixin = require('../common/weixin');
 
 function getSessionUserData(user) {
-    return {
-        userId: user.UserID,
-        authToken: issueUserAuthToken(user)
-    };
+    return _.extend(user, {authToken: issueUserAuthToken(user)})
 }
 
 function issueUserAuthToken(user) {

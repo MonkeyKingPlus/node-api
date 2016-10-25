@@ -31,7 +31,7 @@
       },
       "IdentityType": {
         "type": "integer",
-        "description": "认证类型,0=微信;1=微博;2=手机;3=邮箱"
+        "description": "认证类型,0=微信;1=微博;2=手机;3=邮箱;4-QQ"
       },
       "IsThirdParty": {
         "type": "integer",

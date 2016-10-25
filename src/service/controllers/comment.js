@@ -10,6 +10,7 @@ var router = express.Router();
 
 var libs = require("../../libs");
 var helper = libs.common.helper;
+var commentBL = libs.business.comment;
 var requireAuth = libs.middleware.auth_service();
 
 module.exports = function (app) {
@@ -43,7 +44,16 @@ module.exports = function (app) {
  *           $ref: '#/definitions/Comment'
  */
 router.post("/", requireAuth, function (req, res, next) {
-    res.send(helper.buildSuccessResult());
+    var userInfo = req.body;
+    userInfo.CommentUserInfoID = req.user.ID;
+    return commentBL.saveComment(userInfo)
+        .then(function (result) {
+            res.send(helper.buildSuccessResult(result));
+        })
+        .catch(function (err) {
+            next(err);
+        })
+
 });
 
 /**

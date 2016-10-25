@@ -6,4 +6,13 @@ var enums = require('../common/enums');
 
 exports.queryCommentList = function () {
 
-}
+};
+
+exports.saveComment = function (comment) {
+    comment.Status = enums.commonStatus.valid;
+    return db.executeSql(commentDb.addComment, comment)
+        .then(function (result) {
+            comment.ID = result.insertId;
+            return comment;
+        })
+};
