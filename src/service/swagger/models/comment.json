@@ -27,5 +27,48 @@
         "description": "创建时间"
       }
     }
+  },
+  "ComplexComment": {
+    "type": "object",
+    "allOf": [
+      {
+        "$ref": "#/definitions/Comment"
+      }
+    ],
+    "properties": {
+      "ParentComment": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/definitions/Comment"
+          }
+        ]
+      }
+    }
+  },
+  "CommentList": {
+    "type": "array",
+    "items": {
+      "$ref": "#/definitions/ComplexComment"
+    }
+  },
+  "CommentQueryResult": {
+    "type": "object",
+    "properties": {
+      "CommentList": {
+        "allOf": [
+          {
+            "$ref": "#/definitions/CommentList"
+          }
+        ]
+      },
+      "PageInfo": {
+        "allOf": [
+          {
+            "$ref": "#/definitions/PageInfo"
+          }
+        ]
+      }
+    }
   }
 }

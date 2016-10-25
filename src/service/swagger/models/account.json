@@ -13,12 +13,9 @@
     }
   },
   "ThirdLoginUser": {
-    "type": "object",
-    "required": [
-      "Identifier",
-      "IdentityType"
-    ],
-    "$ref": "#/definitions/User"
+    "allOf":[{
+      "$ref": "#/definitions/User"
+    }]
   },
   "User": {
     "type": "object",

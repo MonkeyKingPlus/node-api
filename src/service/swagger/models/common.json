@@ -1,0 +1,19 @@
+{
+  "PageInfo": {
+    "type": "object",
+    "properties": {
+      "PageIndex": {
+        "type": "integer",
+        "description": "页码,从1开始"
+      },
+      "PageSize": {
+        "type": "integer",
+        "description": "每页记录数"
+      },
+      "TotalCount": {
+        "type": "integer",
+        "description": "记录总数"
+      }
+    }
+  }
+}
