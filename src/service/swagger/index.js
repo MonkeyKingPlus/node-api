@@ -12,7 +12,7 @@ module.exports = function (app, options) {
             version: '1.0.0',
             description: 'support monkey plus projects'
         },
-        host: "localhost:" + options.port || "3000",
+        //host: "localhost:" + options.port || "3000",
         basePath: options.basePath || "/",
         schemes: [
             "http",

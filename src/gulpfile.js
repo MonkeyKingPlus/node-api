@@ -13,37 +13,6 @@ var gulp = require('gulp'),
     util = require("util"),
     mkpSSH = require('./gulpfile/mkp-ssh');
 
-var deployConfig = {
-    test: {
-        servers: [{
-            sshConfig: {
-                host: 'ec2-54-249-7-123.ap-northeast-1.compute.amazonaws.com',
-                port: 22,
-                username: 'ec2-user',
-                privateKey: fs.readFileSync(path.join(os.homedir(),'.ssh/monkeyplus')),
-                readyTimeout: 200000
-            }
-        }],
-        deployPath: "/home/ec2-user/mkp",
-        deploySrc: [],
-        deployServers: []
-    },
-    production: {
-        servers: [{
-            sshConfig: {
-                host: 'ec2-54-249-7-123.ap-northeast-1.compute.amazonaws.com',
-                port: 22,
-                username: 'ec2-user',
-                privateKey: fs.readFileSync(path.join(os.homedir(),'.ssh/monkeyplus')),
-                readyTimeout: 200000
-            }
-        }],
-        deployPath: "/home/ec2-user/mkp",
-        deploySrc: [],
-        deployServers: []
-    }
-};
-
 var cfg;
 
 function getEnvConf(type) {
@@ -61,7 +30,7 @@ function getEnvConf(type) {
 
 //develop service
 gulp.task('s', function () {
-        nodemon({
+    nodemon({
         script: 'service/app.js',
         ext: 'js',
         ignore: ['dist/**', 'node_modules/**']
@@ -69,6 +38,38 @@ gulp.task('s', function () {
 });
 
 gulp.task('deploy-service', function () {
+
+    var deployConfig = {
+        test: {
+            servers: [{
+                sshConfig: {
+                    host: 'ec2-54-249-7-123.ap-northeast-1.compute.amazonaws.com',
+                    port: 22,
+                    username: 'ec2-user',
+                    privateKey: fs.readFileSync(path.join(os.homedir(), '.ssh/monkeyplus')),
+                    readyTimeout: 200000
+                }
+            }],
+            deployPath: "/home/ec2-user/mkp",
+            deploySrc: [],
+            deployServers: []
+        },
+        production: {
+            servers: [{
+                sshConfig: {
+                    host: 'ec2-54-249-7-123.ap-northeast-1.compute.amazonaws.com',
+                    port: 22,
+                    username: 'ec2-user',
+                    privateKey: fs.readFileSync(path.join(os.homedir(), '.ssh/monkeyplus')),
+                    readyTimeout: 200000
+                }
+            }],
+            deployPath: "/home/ec2-user/mkp",
+            deploySrc: [],
+            deployServers: []
+        }
+    };
+
     var env = argv.env || "test";
     cfg = deployConfig[env];
     cfg.isDevelopment = false;
