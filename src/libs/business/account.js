@@ -6,6 +6,7 @@ var accountDb = require('../db_conf/db_account.js');
 var db = require('../common/db_mysql_q.js')();
 var businessError = require('../common/businesserror');
 var logger = require('../common/logger')("service");
+var enums = require('../common/enums');
 
 function formatPassword(password, time) {
     if (!password) {
@@ -42,22 +43,22 @@ exports.getUserInfoByIdentifier = function (identifier, identityType) {
  * @param userInfo {object} 用户信息
  */
 exports.createUser = function (userInfo) {
-    return db.executeTranPromise(accountDb.insertTest.db,
+    return db.executeTranPromise(accountDb.createUser.db,
         function (trans) {
+            userInfo.Status = enums.commonStatus.valid;
             return db.executeTran(trans, accountDb.createUser, userInfo)
                 .then(function (result) {
-                    userInfo.UserInfoID = result.insertId;
+                    userInfo.ID = userInfo.UserInfoID = result.insertId;
                     if (userInfo.IsThirdParty) {
                         userInfo.Credential = uuid.v4();
                     }
                     userInfo.Credential = formatPassword(userInfo.Credential);
                     return db.executeTran(trans, accountDb.bindUserAuth, userInfo);
                 })
-                .then(function () {
-                    return userInfo;
-                });
         }
-    ).fail(function (err) {
+    ).then(function () {
+        return exports.getUserInfo(userInfo.ID);
+    }).fail(function (err) {
         logger.error(err);
         throw new businessError("用户创建不成功")
     });

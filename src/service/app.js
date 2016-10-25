@@ -34,7 +34,7 @@ app.use(express.static(config.root + '/service/public', {
     etag: false
 }));
 
-if (global.ENV == "development") {
+if (global.ENV == "development" || global.ENV == "test") {
     require("./swagger")(app,
         {
             port: config.port,

@@ -5,6 +5,7 @@ module.exports = {
     common   : {
         config                          : require("./common/config"),
         helper                          : require("./common/helper"),
+        enums                           : require("./common/enums"),
         logger                          : require("./common/logger"),
         weixin                          : require("./common/weixin"),
         db_config                       : requiredir("./db_conf"),

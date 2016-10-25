@@ -1,15 +1,53 @@
 {
-    "User": {
-        "type": "object",
-        "properties": {
-            "LoginName": {
-                "type": "string",
-                "description": "user login name"
-            },
-            "Password": {
-                "type": "string",
-                "description": "password"
-            }
-        }
+  "LoginUser": {
+    "type": "object",
+    "properties": {
+      "LoginName": {
+        "type": "string",
+        "description": "用户名"
+      },
+      "Password": {
+        "type": "string",
+        "description": "密码"
+      }
     }
+  },
+  "ThirdLoginUser": {
+    "type": "object",
+    "required": [
+      "Identifier",
+      "IdentityType"
+    ],
+    "$ref": "#/definitions/User"
+  },
+  "User": {
+    "type": "object",
+    "properties": {
+      "Identifier": {
+        "required": true,
+        "type": "string",
+        "description": "用户唯一标识"
+      },
+      "Credential": {
+        "type": "string",
+        "description": "密码,第三方登录该字段留空"
+      },
+      "IdentityType": {
+        "type": "integer",
+        "description": "认证类型,0=微信;1=微博;2=手机;3=邮箱"
+      },
+      "IsThirdParty": {
+        "type": "integer",
+        "description": "认证类型,0=不是;1=是"
+      },
+      "NickName": {
+        "type": "string",
+        "description": "昵称"
+      },
+      "Avatar": {
+        "type": "string",
+        "description": "头像"
+      }
+    }
+  }
 }

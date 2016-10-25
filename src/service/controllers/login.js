@@ -11,7 +11,9 @@ var passport = require("passport");
 
 var libs = require("../../libs");
 var authorizeBL = libs.business.authorization;
+var accountBL = libs.business.account;
 var helper = libs.common.helper;
+var enums = libs.common.enums;
 var BusinessError = libs.common.businessError;
 var config = libs.common.config;
 
@@ -32,7 +34,7 @@ module.exports = function (app) {
  *         required: true
  *         schema:
  *           type: object
- *           $ref: '#/definitions/User'
+ *           $ref: '#/definitions/LoginUser'
  *     responses:
  *       default:
  *         description: error model
@@ -71,7 +73,7 @@ loginRouter.post("/", function (req, res, next) {
     }
 });
 
-loginRouter.get("/weixin", function (req, res, next) {
+loginRouter.post("/weixin", function (req, res, next) {
         passport.authenticate('weixin', {session: false}, function (err, user, info) {
             if (err || !user) {
                 var message = "微信授权失败";
@@ -88,3 +90,62 @@ loginRouter.get("/weixin", function (req, res, next) {
         })(req, res, next);
     }
 );
+
+/**
+ * @swagger
+ * /login/thridparty:
+ *   post:
+ *     description: Login to the application with qq
+ *     tags: [Login]
+ *     parameters:
+ *       - name: body
+ *         description: User login model
+ *         in: body
+ *         required: true
+ *         schema:
+ *           type: object
+ *           $ref: '#/definitions/ThirdLoginUser'
+ *     responses:
+ *       default:
+ *         description: error model
+ *         schema:
+ *           type: object
+ *           $ref: '#/definitions/Error'
+ *       200:
+ *         description: user info
+ *         schema:
+ *           type: object
+ *           $ref: '#/definitions/User'
+ */
+loginRouter.post("/thridparty", function (req, res, next) {
+    req.checkBody("Identifier", "认证标识不能为空").notEmpty();
+    req.checkBody("IdentityType", "认证类型不能为空").notEmpty();
+
+    var errors = req.validationErrors();
+    if (errors && errors.length) {
+        res.send(helper.buildErrorResult(4100, errors, helper.buildValidateErrorMessages(errors)));
+    }
+    else {
+        return loginForThirdPart(req.body)
+            .then(function (user) {
+                var token = authorizeBL.issueUserAuthToken(user);
+                res.header("x-mkp-authentication", token);
+                res.send(helper.buildSuccessResult(user, "登录成功"));
+            })
+            .catch(function (err) {
+                next(err);
+            })
+    }
+});
+
+function loginForThirdPart(userInfo) {
+    return accountBL.getUserInfoByIdentifier(userInfo.Identifier, userInfo.IdentityType)
+        .then(function (user) {
+            if (user) {
+                return user;
+            } else {
+                userInfo.IsThirdParty = enums.yn.yes;
+                return accountBL.createUser(userInfo);
+            }
+        });
+}

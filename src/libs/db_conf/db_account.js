@@ -6,12 +6,12 @@ module.exports = {
         sql: multiline(function () {
             /*
              SELECT
-                 B.ID,
-                 A.Identifier,
-                 A.IdentityType,
-                 A.IsThirdParty,
-                 B.NickName,
-                 B.Avatar
+             B.ID,
+             A.Identifier,
+             A.IdentityType,
+             A.IsThirdParty,
+             B.NickName,
+             B.Avatar
              FROM User_Auth A
              INNER JOIN User_Info B ON A.UserInfoID = B.ID
              WHERE B.STATUS = 1
@@ -34,7 +34,7 @@ module.exports = {
              FROM User_Auth A
              INNER JOIN User_Info B ON A.UserInfoID = B.ID
              WHERE B.STATUS = 1
-             AND A.ID = ?
+             AND B.ID = ?
              */
         })
     },
@@ -62,11 +62,13 @@ module.exports = {
         "db": "write",
         sql: multiline(function () {
             /*
-             insert into User_Info(Status) values(@Status)
+             insert into User_Info(Status,NickName,Avatar) values(@Status,@NickName,@Avatar)
              */
         }),
         inputParams: [
-            {name: "Status"}
+            {name: "Status"},
+            {name: "NickName"},
+            {name: "Avatar"}
         ]
     }, "bindUserAuth": {
         "db": "write",

@@ -1,3 +1,10 @@
+/**
+ * @swagger
+ * tags:
+ *   - name: Register
+ *     description: register services
+ */
+
 var express = require('express');
 var router = express.Router();
 
@@ -10,6 +17,32 @@ module.exports = function (app) {
     app.use('/v1/register', router);
 };
 
+/**
+ * @swagger
+ * /register:
+ *   post:
+ *     description: Login to the application
+ *     tags: [Register]
+ *     parameters:
+ *       - name: body
+ *         description: User model
+ *         in: body
+ *         required: true
+ *         schema:
+ *           type: object
+ *           $ref: '#/definitions/LoginUser'
+ *     responses:
+ *       default:
+ *         description: error model
+ *         schema:
+ *           type: object
+ *           $ref: '#/definitions/Error'
+ *       200:
+ *         description: user info
+ *         schema:
+ *           type: object
+ *           $ref: '#/definitions/User'
+ */
 router.post('/', function (req, res, next) {
     req.checkBody("Identifier", "用户名不能为空").notEmpty();
     var errors = req.validationErrors();
