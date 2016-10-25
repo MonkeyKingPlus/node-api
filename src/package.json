@@ -43,8 +43,7 @@
     "underscore": "^1.6.0",
     "useragent": "^2.0.9",
     "xml": "^1.0.0",
-    "yargs": "^3.7.1",
-    "swagger-jsdoc": "^1.7.0"
+    "yargs": "^3.7.1"
   },
   "devDependencies": {
     "gulp": "^3.8.11",
@@ -71,6 +70,7 @@
     "progress": "^1.1.8",
     "scp2": "^0.2.2",
     "through2": "^0.6.5",
-    "through2-concurrent": "^1.0.0"
+    "through2-concurrent": "^1.0.0",
+    "swagger-jsdoc": "^1.7.0"
   }
 }
