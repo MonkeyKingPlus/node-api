@@ -91,5 +91,12 @@ router.post("/", requireAuth, function (req, res, next) {
  *           $ref: '#/definitions/CommentQueryResult'
  */
 router.get('/', function (req, res, next) {
-    res.send(helper.buildSuccessResult());
+    commentBL.queryCommentList(req.query.articleid, req.query.pagesize, req.query.pageindex)
+        .then(function (result) {
+            res.send(helper.buildSuccessResult(result));
+        })
+        .catch(function (err) {
+            next(err);
+        })
+
 });

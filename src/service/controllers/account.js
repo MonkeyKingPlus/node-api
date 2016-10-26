@@ -37,12 +37,23 @@ module.exports = function (app) {
  *         required: true
  *         type: integer
  *         format: int32
+ *     responses:
+ *       default:
+ *         description: error model
+ *         schema:
+ *           type: object
+ *           $ref: '#/definitions/Error'
+ *       200:
+ *         description: comment query result
+ *         schema:
+ *           type: object
+ *           $ref: '#/definitions/User'
  */
 
 /*V1版本,获取账户信息,可通过v1/account/id 或者 v2/account/id 来访问*/
 router.get("/:id", requireAuth, function (req, res, next) {
     return Q().then(function () {
-        return accountBL.getUserInfo(req.user.ID);
+        return accountBL.getUserInfo(req.params.id);
     }).then(function (data) {
         res.send(helper.buildSuccessResult(data));
     }).catch(function (err) {

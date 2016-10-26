@@ -6,15 +6,16 @@ var helper = require('../common/helper');
 var enums = require('../common/enums');
 
 exports.queryCommentList = function (articleid, pageSize, pageIndex) {
-    var queryFilter = helper.buildQueryPageInfo({
+    var pageInfo = {
         PageIndex: pageIndex,
         PageSize: pageSize
-    });
+    };
+    var queryFilter = helper.buildQueryPageInfo(pageInfo);
     queryFilter.ArticleInfoID = articleid;
 
     return db.executeSql(commentDb.queryComment, queryFilter)
-        .then(function(results){
-            
+        .then(function (results) {
+            return helper.buildQueryPageResult(results, pageInfo);
         });
 };
 

@@ -151,7 +151,7 @@ function buildSqlObjectValues(sqlObject, values) {
 
     sqlObject.values = [];
 
-    var matches = sqlObject.sql.match(/@[A-Z 0-9 \_]*/img);
+    var matches = sqlObject.sql.match(/@[A-Z0-9\_]*/img);
     if (matches && matches.length > 0) {
         for (var i = 0; i < matches.length; i++) {
             sqlObject.sql = sqlObject.sql.replace(matches[i], '?');

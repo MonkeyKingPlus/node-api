@@ -14,7 +14,7 @@ module.exports = {
         "db": "read",
         sql: multiline(function () {
             /*
-            SELECT COUNT(1) as TotalCount FROM CommentInfo WHERE ArticleInfoID = ArticleInfoID
+            SELECT COUNT(1) as TotalCount FROM CommentInfo WHERE ArticleInfoID = @ArticleInfoID;
 
             SELECT
              A.ArticleInfoID,

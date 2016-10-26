@@ -289,87 +289,6 @@ exports.parseBool = function (str) {
     }
 };
 
-function buildUrl() {
-    var pageName = arguments[0];
-    var obj = config.siteMap[pageName];
-    if (!obj || !obj.url) {
-        throw new Error("Invalid page name [" + pageName + "], please check config file!");
-    }
-    var url = obj.url;
-    var params = Array.prototype.slice.call(arguments, 1, arguments.length);
-    if (params.length > 0) {
-        params = [url].concat(params);
-        url = util.format.apply(util, params);
-    }
-    return url;
-};
-
-var pagerHelper = {
-    buildNumPagerDataContext: function (totalPage, currentPage, visiblePageCount, url, prevPageText, nextPageText) {
-        prevPageText = prevPageText ? prevPageText : "上一页";
-        nextPageText = nextPageText ? nextPageText : "下一页";
-
-        if (totalPage > 1) {
-            var visibleFromPage = currentPage - Math.floor(visiblePageCount / 2);
-            if (visibleFromPage < 1) {
-                visibleFromPage = 1;
-            }
-
-            var visibleEndPage = visibleFromPage + visiblePageCount - 1;
-            if (visibleEndPage > totalPage) {
-                visibleEndPage = totalPage;
-
-                visibleFromPage = visibleFromPage - (visiblePageCount - (visibleEndPage - visibleFromPage + 1));
-                if (visibleFromPage < 1) {
-                    visibleFromPage = 1;
-                }
-            }
-
-            var context = {
-                PrevButtonEnable: currentPage != 1,
-                NextButtonEnable: currentPage != totalPage,
-                ShowMoreAtHead: visibleFromPage > 2,
-                ShowFirstPage: visibleFromPage > 1,
-                FirstPageUrl: exports.updateUrlParameter(url, "page", 1),
-                ShowMoreAtTail: visibleEndPage < totalPage,
-                VisiblePages: []
-            };
-
-            if (context.PrevButtonEnable) {
-                context.PrevPageUrl = exports.updateUrlParameter(url, "page", currentPage - 1);
-                context.PrevPageNumber = currentPage - 1;
-            }
-
-            if (context.NextButtonEnable) {
-                context.NextPageUrl = exports.updateUrlParameter(url, "page", currentPage + 1);
-                context.NextPageNumber = currentPage + 1;
-            }
-
-            for (var i = visibleFromPage; i <= visibleEndPage; i++) {
-                context.VisiblePages.push({
-                    PageNumber: i,
-                    IsActive: i == currentPage,
-                    Url: i != currentPage ? exports.updateUrlParameter(url, "page", i) : null
-                });
-            }
-
-            return context;
-        }
-    },
-    buildNumPagerDataContextWithListInfo: function (listInfo, visiblePageCount, url, prevPageText, nextPageText) {
-        if (!listInfo || !url) {
-            return null;
-        }
-
-        var totalPage = Math.ceil(listInfo.TotalCount / listInfo.ListCount);
-
-        return this.buildNumPagerDataContext(totalPage, listInfo.PageNumber, visiblePageCount, url, prevPageText, nextPageText);
-    }
-};
-
-exports.buildNumPagerDataContext = pagerHelper.buildNumPagerDataContext;
-exports.buildNumPagerDataContextWithListInfo = pagerHelper.buildNumPagerDataContextWithListInfo;
-
 exports.buildSuccessResult = function (data, message) {
     return {
         Code: 0,
@@ -540,10 +459,26 @@ exports.getFullUrlSync = function (req) {
 };
 
 exports.buildQueryPageInfo = function (pageInfo) {
-    pageInfo.PageIndex = pageInfo.PageIndex || 1;
-    pageInfo.PageSize = pageInfo.PageSize || 10;
+    pageInfo.PageIndex = parseInt(pageInfo.PageIndex || 1);
+    pageInfo.PageSize = parseInt(pageInfo.PageSize || 10);
     return {
         Start: pageInfo.PageSize * (pageInfo.PageIndex - 1),
-        Count: pageInfo.PageSize,
+        Count: pageInfo.PageSize
     }
+};
+
+exports.buildQueryPageResult = function (results, pageInfo) {
+    if (!results || results.length == 0) {
+        return null;
+    }
+    var totalCount = results[0][0].TotalCount;
+    return {
+        ItemList: results[1],
+        ListInfo: {
+            IsEnd: pageInfo.PageSize * (pageInfo.PageIndex - 1) >= totalCount,
+            PageSize: pageInfo.PageSize,
+            TotalCount: totalCount,
+            PageIndex: pageInfo.PageIndex
+        }
+    };
 };

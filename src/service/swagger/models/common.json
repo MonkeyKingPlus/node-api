@@ -16,7 +16,7 @@
         "type": "integer",
         "description": "记录总数"
       },
-      "IsLastPage": {
+      "IsEnd": {
         "type": "boolean",
         "default": false,
         "description": "是否是最后一页"
