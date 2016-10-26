@@ -37,7 +37,7 @@ module.exports = function (app) {
  *         description: error model
  *         schema:
  *           type: object
- *           $ref: '#/definitions/Error'
+ *           $ref: '#/definitions/ActionResult'
  *       200:
  *         description: user info
  *         schema:

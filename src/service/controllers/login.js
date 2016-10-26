@@ -40,7 +40,7 @@ module.exports = function (app) {
  *         description: error model
  *         schema:
  *           type: object
- *           $ref: '#/definitions/Error'
+ *           $ref: '#/definitions/ActionResult'
  *       200:
  *         description: user info
  *         schema:
@@ -110,7 +110,7 @@ loginRouter.post("/weixin", function (req, res, next) {
  *         description: error model
  *         schema:
  *           type: object
- *           $ref: '#/definitions/Error'
+ *           $ref: '#/definitions/ActionResult'
  *       200:
  *         description: user info
  *         schema:

@@ -20,11 +20,15 @@
       },
       "ChildCommentID": {
         "type": "integer",
-        "description": "回复评论ID"
+        "description": "回复评论的ID"
       },
       "InDate": {
         "type": "string",
         "description": "创建时间"
+      },
+      "ChildComment": {
+        "type": "string",
+        "description": "回复评论的内容"
       }
     }
   },
@@ -51,14 +55,14 @@
   "CommentQueryResult": {
     "type": "object",
     "properties": {
-      "CommentList": {
+      "ItemList": {
         "allOf": [
           {
             "$ref": "#/definitions/CommentList"
           }
         ]
       },
-      "PageInfo": {
+      "ListInfo": {
         "allOf": [
           {
             "$ref": "#/definitions/PageInfo"

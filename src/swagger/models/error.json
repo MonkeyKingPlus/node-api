@@ -1,5 +1,5 @@
 {
-    "Error": {
+    "ActionResult": {
         "type": "object",
         "properties": {
             "Code": {

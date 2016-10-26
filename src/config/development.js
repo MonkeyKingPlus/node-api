@@ -17,7 +17,10 @@ var config = {
     "root": rootPath,
     "port": 3000,
     "app": {
-        "name": 'monkeyplus'
+        "resourceUrl": "http://ec2-54-249-7-123.ap-northeast-1.compute.amazonaws.com:3000"
+    },
+    "mobile": {
+
     },
     "cookieKeys": {
         "authToken": {

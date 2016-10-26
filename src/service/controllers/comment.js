@@ -36,12 +36,12 @@ module.exports = function (app) {
  *         description: error model
  *         schema:
  *           type: object
- *           $ref: '#/definitions/Error'
+ *           $ref: '#/definitions/ActionResult'
  *       200:
  *         description: comment query result
  *         schema:
  *           type: object
- *           $ref: '#/definitions/Comment'
+ *           $ref: '#/definitions/ActionResult'
  */
 router.post("/", requireAuth, function (req, res, next) {
     var userInfo = req.body;
@@ -60,7 +60,7 @@ router.post("/", requireAuth, function (req, res, next) {
  * @swagger
  * /comment/{articleid}:
  *   get:
- *     description: 获取文章的评论列表
+ *     description: 获取评论列表
  *     tags: [Comment]
  *     parameters:
  *       - name: articleid
@@ -83,7 +83,7 @@ router.post("/", requireAuth, function (req, res, next) {
  *         description: error model
  *         schema:
  *           type: object
- *           $ref: '#/definitions/Error'
+ *           $ref: '#/definitions/ActionResult'
  *       200:
  *         description: comment query result
  *         schema:

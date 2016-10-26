@@ -42,12 +42,13 @@ module.exports = function (app) {
  *         description: error model
  *         schema:
  *           type: object
- *           $ref: '#/definitions/Error'
+ *           $ref: '#/definitions/ActionResult'
  *       200:
  *         description: comment query result
  *         schema:
  *           type: object
- *           $ref: '#/definitions/User'
+ *           allOf:
+ *             - $ref: '#/definitions/User'
  */
 
 /*V1版本,获取账户信息,可通过v1/account/id 或者 v2/account/id 来访问*/

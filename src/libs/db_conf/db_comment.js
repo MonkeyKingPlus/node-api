@@ -24,7 +24,7 @@ module.exports = {
              A.ChildCommentID,
              A.InDate,
              A.EditDate,
-             B.Content AS ParentComment
+             B.Content AS ChildComment
              FROM CommentInfo A
              LEFT JOIN CommentInfo B ON A.ID = B.ChildCommentID
              WHERE A.ArticleInfoID = @ArticleInfoID AND A.ID >=
