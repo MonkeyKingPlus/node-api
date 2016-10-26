@@ -3,12 +3,10 @@
     "type": "object",
     "properties": {
       "Identifier": {
-        "required": true,
         "type": "string",
         "description": "用户名"
       },
       "Credential": {
-        "required": true,
         "type": "string",
         "description": "密码"
       }
