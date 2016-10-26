@@ -44,8 +44,8 @@ if (global.ENV == "development" || global.ENV == "test") {
 }
 
 app.use(compression());
-app.use(bodyParser.json({limit: '5mb'}));
 app.use(bodyParser.urlencoded({limit: '5mb', extended: true}));
+app.use(bodyParser.json({limit: '5mb'}));
 app.use(expressValidator());
 libs.common.validatorExtender.extend(expressValidator.validator);
 app.use(cookieParser());

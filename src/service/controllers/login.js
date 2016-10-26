@@ -93,7 +93,7 @@ loginRouter.post("/weixin", function (req, res, next) {
 
 /**
  * @swagger
- * /login/thridparty:
+ * /login/thirdparty:
  *   post:
  *     description: Login to the application with qq/weibo
  *     tags: [Login]
@@ -117,7 +117,7 @@ loginRouter.post("/weixin", function (req, res, next) {
  *           type: object
  *           $ref: '#/definitions/User'
  */
-loginRouter.post("/thridparty", function (req, res, next) {
+loginRouter.post("/thirdparty", function (req, res, next) {
     req.checkBody("Identifier", "认证标识不能为空").notEmpty();
     req.checkBody("IdentityType", "认证类型不能为空").notEmpty();
 
