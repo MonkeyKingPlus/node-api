@@ -25,5 +25,33 @@
   },
   "Config": {
     "type": "object"
+  },
+  "ActionResult": {
+    "type": "object",
+    "properties": {
+      "Code": {
+        "type": "integer",
+        "format": "int32"
+      },
+      "Message": {
+        "type": "string"
+      },
+      "Data": {
+        "type": "object"
+      }
+    }
+  },
+  "Upload": {
+    "type": "object",
+    "properties": {
+      "Content": {
+        "type": "string",
+        "description": "文件(base64编码)"
+      },
+      "FileName": {
+        "type": "string",
+        "description": "文件名"
+      }
+    }
   }
 }

@@ -41,25 +41,28 @@ module.exports = function (app) {
  *         description: error model
  *         schema:
  *           type: object
- *           $ref: '#/definitions/Error'
+ *           $ref: '#/definitions/ActionResult'
  *       200:
  *         description: comment query result
  *         schema:
  *           type: object
+ *           $ref: '#/definitions/ActionResult'
  */
 router.post('/', function (req, res, next) {
     //var imageJpeg = fs.readFileSync("/Users/youkai/Downloads/22340206.jpeg");
     //var content = new Buffer(imageJpeg).toString('base64');
     //var fileName = "22340206.jpeg";
 
-    var content = req.body.content;
-    var fileName = req.body.fileName;
-    var saveFileName = path.resolve(__dirname, "../../uploads/" + uuid.v4() + path.extname(fileName));
+    var content = req.body.Content;
+    var fileName = req.body.FileName;
+
+
+    var saveFileName = uuid.v4() + path.extname(fileName);
     var buf = new Buffer(content, 'base64');
     if (buf.length <= 0 || buf.length > MAX_FILE_SIZE) {
         next(Error("最多只能上传5M的文件"));
     }
 
-    fs.writeFileSync(saveFileName, buf, {encoding: 'utf8'});
-    res.send(helper.buildSuccessResult());
+    fs.writeFileSync(path.resolve(__dirname, "../../uploads/" + saveFileName), buf, {encoding: 'utf8'});
+    res.send(helper.buildSuccessResult(helper.buildImageUrl(saveFileName)));
 });

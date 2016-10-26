@@ -289,6 +289,10 @@ exports.parseBool = function (str) {
     }
 };
 
+exports.buildImageUrl = function (fileName) {
+    return config.app.resourceUrl + "/" + fileName;
+}
+
 exports.buildSuccessResult = function (data, message) {
     return {
         Code: 0,
