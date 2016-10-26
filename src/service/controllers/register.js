@@ -2,7 +2,7 @@
  * @swagger
  * tags:
  *   - name: Register
- *     description: register services
+ *     description: 注册
  */
 
 var express = require('express');

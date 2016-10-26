@@ -2,7 +2,7 @@
  * @swagger
  * tags:
  *   - name: Login
- *     description: login services
+ *     description: 登录
  */
 
 var express = require('express');

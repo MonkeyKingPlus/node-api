@@ -2,7 +2,7 @@
  * @swagger
  * tags:
  *   - name: Account
- *     description: account services
+ *     description: 个人账户
  */
 
 var express = require('express');

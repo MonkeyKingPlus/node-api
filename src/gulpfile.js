@@ -38,7 +38,13 @@ gulp.task('s', function () {
 });
 
 gulp.task('deploy-service', function () {
+    deployService();
+});
+gulp.task('deploy-service-first', function () {
+    deployService(true);
+});
 
+function deployService(first) {
     var deployConfig = {
         test: {
             servers: [{
@@ -73,7 +79,8 @@ gulp.task('deploy-service', function () {
     var env = argv.env || "test";
     cfg = deployConfig[env];
     cfg.isDevelopment = false;
-    cfg.deploySrc = ["*js", "*json", "config/**", "libs/**", "service/**"];
+    cfg.deploySrc = first ? ["*js", "*json", "config/**", "libs/**", "service/**", "swagger/**"] :
+        ["*js", "*json", "config/**", "libs/**", "service/**", "swagger/models/*.json"];//只发swagger下的json文件
     cfg.deployPath = cfg.deployPath + "/srv";
     cfg.deployServers = cfg.servers;
 
@@ -87,7 +94,7 @@ gulp.task('deploy-service', function () {
             dest: cfg.deployPath + '/publish.zip',
             shell: ['cd ' + cfg.deployPath,
                 'shopt -s extglob',
-                'rm -rf !(logs|node_modules|publish.zip)',
+                'rm -rf !(logs|node_modules|publish.zip|swagger)',
                 'unzip -o publish.zip -d dist',
                 'cp -rf dist/** .',
                 'rm -rf dist',
@@ -100,5 +107,5 @@ gulp.task('deploy-service', function () {
                 'sleep 15'],
             logPath: logName
         })).pipe(exit());
-});
+}
 

@@ -2,7 +2,7 @@
  * @swagger
  * tags:
  *   - name: Comment
- *     description: 评论相关接口
+ *     description: 评论
  */
 
 var express = require('express');
@@ -58,14 +58,14 @@ router.post("/", requireAuth, function (req, res, next) {
 
 /**
  * @swagger
- * /comment:
+ * /comment/{articleid}:
  *   get:
- *     description: 获取评论列表
+ *     description: 获取文章的评论列表
  *     tags: [Comment]
  *     parameters:
  *       - name: articleid
  *         description: 文章id
- *         in: query
+ *         in: path
  *         required: true
  *         type: integer
  *       - name: pagesize
@@ -90,8 +90,8 @@ router.post("/", requireAuth, function (req, res, next) {
  *           type: object
  *           $ref: '#/definitions/CommentQueryResult'
  */
-router.get('/', function (req, res, next) {
-    commentBL.queryCommentList(req.query.articleid, req.query.pagesize, req.query.pageindex)
+router.get('/:articleid', function (req, res, next) {
+    commentBL.queryCommentList(req.body.articleid, req.query.pagesize, req.query.pageindex)
         .then(function (result) {
             res.send(helper.buildSuccessResult(result));
         })
