@@ -1,6 +1,10 @@
 {
   "LoginUser": {
     "type": "object",
+    "required": [
+      "Identifier",
+      "Credential"
+    ],
     "properties": {
       "Identifier": {
         "type": "string",
