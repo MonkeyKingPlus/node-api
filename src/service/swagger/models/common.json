@@ -3,16 +3,23 @@
     "type": "object",
     "properties": {
       "PageIndex": {
+        "default": 1,
         "type": "integer",
         "description": "页码,从1开始"
       },
       "PageSize": {
+        "default": 10,
         "type": "integer",
         "description": "每页记录数"
       },
       "TotalCount": {
         "type": "integer",
         "description": "记录总数"
+      },
+      "IsLastPage": {
+        "type": "boolean",
+        "default": false,
+        "description": "是否是最后一页"
       }
     }
   }

@@ -150,13 +150,22 @@ function buildSqlObjectValues(sqlObject, values) {
     }
 
     sqlObject.values = [];
-    var parameters = sqlObject.inputParams;
-    if (parameters && parameters.length > 0) {
-        for (var i = 0; i < parameters.length; i++) {
-            sqlObject.sql = sqlObject.sql.replace('@' + parameters[i].name, '?');
-            sqlObject.values.push(values[parameters[i].name]);
+
+    var matches = sqlObject.sql.match(/@[A-Z 0-9 \_]*/img);
+    if (matches && matches.length > 0) {
+        for (var i = 0; i < matches.length; i++) {
+            sqlObject.sql = sqlObject.sql.replace(matches[i], '?');
+            sqlObject.values.push(values[matches[i].substring(1)]);
         }
     }
+    //
+    //var parameters = sqlObject.inputParams;
+    //if (parameters && parameters.length > 0) {
+    //    for (var i = 0; i < parameters.length; i++) {
+    //        sqlObject.sql = sqlObject.sql.replace('@' + parameters[i].name, '?');
+    //        sqlObject.values.push(values[parameters[i].name]);
+    //    }
+    //}
     return sqlObject;
 }
 

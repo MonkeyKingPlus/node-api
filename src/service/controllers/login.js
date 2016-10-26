@@ -48,8 +48,8 @@ module.exports = function (app) {
  *           $ref: '#/definitions/User'
  */
 loginRouter.post("/", function (req, res, next) {
-    req.checkBody("LoginName", "用户名不能为空").notEmpty();
-    req.checkBody("Password", "密码不能为空").notEmpty();
+    req.checkBody("Identifier", "用户名不能为空").notEmpty();
+    req.checkBody("Credential", "密码不能为空").notEmpty();
 
     var errors = req.validationErrors();
     if (errors && errors.length) {

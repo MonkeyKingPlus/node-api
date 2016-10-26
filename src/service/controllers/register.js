@@ -11,6 +11,7 @@ var router = express.Router();
 var libs = require("../../libs");
 var helper = libs.common.helper;
 var accountBL = libs.business.account;
+var enums = libs.common.enums;
 var businessError = libs.common.businessError;
 
 module.exports = function (app) {
@@ -30,7 +31,7 @@ module.exports = function (app) {
  *         required: true
  *         schema:
  *           type: object
- *           $ref: '#/definitions/LoginUser'
+ *           $ref: '#/definitions/User'
  *     responses:
  *       default:
  *         description: error model
@@ -45,6 +46,10 @@ module.exports = function (app) {
  */
 router.post('/', function (req, res, next) {
     req.checkBody("Identifier", "用户名不能为空").notEmpty();
+    var identityType = req.body.IdentityType;
+    if (identityType == enums.identityType.phone || identityType == enums.identityType.email) {
+        req.checkBody("Credential", "密码不能为空").notEmpty();
+    }
     var errors = req.validationErrors();
     if (errors && errors.length) {
         res.send(helper.buildErrorResult(4100, errors, helper.buildValidateErrorMessages(errors)));

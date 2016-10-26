@@ -289,7 +289,7 @@ exports.parseBool = function (str) {
     }
 };
 
-function buildUrl(){
+function buildUrl() {
     var pageName = arguments[0];
     var obj = config.siteMap[pageName];
     if (!obj || !obj.url) {
@@ -430,7 +430,7 @@ exports.isCellPhoneValid = function (cellPhone) {
     return /^(0|86|17951)?(13[0-9]|15[012356789]|17[0678]|18[0-9]|14[57])[0-9]{8}$/.test(cellPhone);
 };
 
-exports.maskCellPhone = function(cellPhone) {
+exports.maskCellPhone = function (cellPhone) {
     var result = cellPhone;
 
     if (_.isString(cellPhone)) {
@@ -537,4 +537,13 @@ exports.lowerCaseKeys = function (item) {
 
 exports.getFullUrlSync = function (req) {
     return req.protocol + '://' + req.get('host') + req.originalUrl;
+};
+
+exports.buildQueryPageInfo = function (pageInfo) {
+    pageInfo.PageIndex = pageInfo.PageIndex || 1;
+    pageInfo.PageSize = pageInfo.PageSize || 10;
+    return {
+        Start: pageInfo.PageSize * (pageInfo.PageIndex - 1),
+        Count: pageInfo.PageSize,
+    }
 };

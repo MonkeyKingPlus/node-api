@@ -2,20 +2,22 @@
   "LoginUser": {
     "type": "object",
     "properties": {
-      "LoginName": {
+      "Identifier": {
         "type": "string",
         "description": "用户名"
       },
-      "Password": {
+      "Credential": {
         "type": "string",
         "description": "密码"
       }
     }
   },
   "ThirdLoginUser": {
-    "allOf":[{
-      "$ref": "#/definitions/User"
-    }]
+    "allOf": [
+      {
+        "$ref": "#/definitions/User"
+      }
+    ]
   },
   "User": {
     "type": "object",
