@@ -51,7 +51,8 @@ var config = {
                 "database": "MonkeyPlus",
                 "connectTimeout": 10000,
                 "dateStrings": true,
-                "connectionLimit": 10
+                "connectionLimit": 10,
+                "multipleStatements": true
                 //"ssl":{
                 //    "ca":fs.readFileSync(path.normalize(rootPath + '/monkeyplus.pem'))
                 //}
@@ -66,7 +67,8 @@ var config = {
                 "database": "MonkeyPlus",
                 "connectTimeout": 10000,
                 "dateStrings": true,
-                "connectionLimit": 10
+                "connectionLimit": 10,
+                "multipleStatements": true
                 //"ssl":{
                 //    "ca":fs.readFileSync(path.normalize(rootPath + '/monkeyplus.pem'))
                 //}
