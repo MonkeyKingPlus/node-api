@@ -21,7 +21,7 @@ router.get("/", function (req, res, next) {
 
 /**
  * @swagger
- * /comment:
+ * /config:
  *   post:
  *     description: 获取基础配置
  *     tags: [Index]
