@@ -16,8 +16,8 @@ var _ = require("underscore");
 
 var libs = require("../../libs");
 var helper = libs.common.helper;
+var config = libs.common.config;
 var accountBL = libs.business.account;
-var authorizationBL = libs.business.authorization;
 var requireAuth = libs.middleware.auth_service();
 
 module.exports = function (app) {
@@ -60,4 +60,96 @@ router.get("/:id", requireAuth, function (req, res, next) {
     }).catch(function (err) {
         next(err);
     })
+});
+
+
+/**
+ * @swagger
+ * /account/changeNickName:
+ *   post:
+ *     description: 修改昵称
+ *     tags: [Account]
+ *     parameters:
+ *       - name: body
+ *         description: 用户实体,只需要包含NickName.
+ *         in: body
+ *         required: true
+ *         schema:
+ *           type: object,
+ *           $ref: '#/definitions/User'
+ *     responses:
+ *       default:
+ *         description: error model
+ *         schema:
+ *           type: object
+ *           $ref: '#/definitions/ActionResult'
+ *       200:
+ *         description: comment query result
+ *         schema:
+ *           type: integer
+ */
+router.post('/changeNickName', requireAuth, function (req, res, next) {
+    var userId = req.user.ID;
+    var nickName = req.body.NickName;
+    accountBL.isNickNameExist(userId, nickName)
+        .then(function (isExist) {
+            console.log(isExist)
+            if (isExist) {
+                nickName = nickName + "_" + helper.getUuidWithoutHyphen().substring(0, 4);
+            }
+            return accountBL.updateNickName(userId, nickName)
+                .then(function (affectRows) {
+                    if (affectRows > 0) {
+                        res.send(
+                            isExist ?
+                                helper.buildResult(config.mobile.returnCode.NickNameDuplicate, nickName, "您的昵称重复,系统已为您重命名,请及时修改") :
+                                helper.buildSuccessResult()
+                        );
+                    } else {
+                        res.send(helper.buildErrorResult());
+                    }
+                })
+        })
+        .catch(function (err) {
+            next(err);
+        })
+});
+
+/**
+ * @swagger
+ * /account/changeAvatar:
+ *   post:
+ *     description: 修改头像
+ *     tags: [Account]
+ *     parameters:
+ *       - name: body
+ *         description: 用户实体,只需要包含Avatar.
+ *         in: body
+ *         required: true
+ *         schema:
+ *           type: object,
+ *           $ref: '#/definitions/User'
+ *     responses:
+ *       default:
+ *         description: error model
+ *         schema:
+ *           type: object
+ *           $ref: '#/definitions/ActionResult'
+ *       200:
+ *         description: comment query result
+ *         schema:
+ *           type: integer
+ */
+router.post('/changeAvatar', requireAuth, function (req, res, next) {
+    accountBL.updateAvatar(req.user.ID, req.body.Avatar)
+        .then(function (affectRows) {
+            if (affectRows > 0) {
+                res.send(helper.buildSuccessResult(affectRows));
+            } else {
+                res.send(helper.buildErrorResult());
+            }
+        })
+        .catch(function (err) {
+            next(err);
+        })
 });

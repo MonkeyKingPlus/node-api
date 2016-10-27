@@ -20,7 +20,9 @@ var config = {
         "resourceUrl": "http://localhost:3000/uploads",
         "uploadUrl": path.normalize(rootPath + "/service/public/uploads")
     },
-    "mobile": {},
+    "mobile": {
+        returnCode: require('./common/return_code.js')
+    },
     "cookieKeys": {
         "authToken": {
             "name": "at",

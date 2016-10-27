@@ -24,7 +24,13 @@
     }
   },
   "Config": {
-    "type": "object"
+    "type": "object",
+    "properties": {
+      "returnCode": {
+        "type": "object",
+        "description": "api返回的Code,用于客户端根据Code做不同的处理"
+      }
+    }
   },
   "ActionResult": {
     "type": "object",

@@ -64,26 +64,39 @@ module.exports = {
             /*
              insert into User_Info(Status,NickName,Avatar) values(@Status,@NickName,@Avatar)
              */
-        }),
-        inputParams: [
-            {name: "Status"},
-            {name: "NickName"},
-            {name: "Avatar"}
-        ]
-    }, "bindUserAuth": {
+        })
+    },
+    "bindUserAuth": {
         "db": "write",
         sql: multiline(function () {
             /*
              insert into User_Auth( UserInfoID,IdentityType,Identifier,Credential,IsThirdParty)
              values( @UserInfoID,@IdentityType,@Identifier,@Credential,@IsThirdParty)
              */
-        }),
-        inputParams: [
-            {name: "UserInfoID"},
-            {name: "IdentityType"},
-            {name: "Identifier"},
-            {name: "Credential"},
-            {name: "IsThirdParty"}
-        ]
+        })
+    },
+    "isNickNameExist": {
+        "db": "write",
+        sql: multiline(function () {
+            /*
+             SELECT NickName FROM User_Info WHERE NickName = @NickName AND ID <> @ID
+             */
+        })
+    },
+    "updateNickName": {
+        "db": "write",
+        sql: multiline(function () {
+            /*
+             UPDATE User_Info SET NickName = @NickName ,EditDate = now() WHERE ID = @ID
+             */
+        })
+    },
+    "updateAvatar": {
+        "db": "write",
+        sql: multiline(function () {
+            /*
+             UPDATE User_Info SET Avatar = @Avatar ,EditDate = now() WHERE ID = @ID
+             */
+        })
     }
 };

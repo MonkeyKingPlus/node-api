@@ -293,6 +293,14 @@ exports.buildImageUrl = function (fileName) {
     return config.app.resourceUrl + "/" + fileName;
 }
 
+exports.buildResult = function (code, data, message) {
+    return {
+        Code: code,
+        Data: data,
+        Message: message
+    };
+};
+
 exports.buildSuccessResult = function (data, message) {
     return {
         Code: 0,
@@ -487,6 +495,6 @@ exports.buildQueryPageResult = function (results, pageInfo) {
     };
 };
 
-exports.getUuidWithoutHyphen = function(){
+exports.getUuidWithoutHyphen = function () {
     return uuid.v4().replace(/-/g, '');
 }

@@ -71,6 +71,44 @@ exports.createUser = function (userInfo) {
     });
 };
 
+/**
+ * 更新用户昵称
+ * @param userId
+ * @param nickName
+ * @returns {int} 影响记录数
+ */
+exports.updateNickName = function (userId, nickName) {
+    return db.executeSql(accountDb.updateNickName, {
+            ID: userId,
+            NickName: nickName
+        })
+        .then(function (result) {
+            return result.changedRows;
+        });
+};
+
+/**
+ * 更新用户头像
+ * @param userId
+ * @param nickName
+ * @returns {int} 影响记录数
+ */
+exports.updateAvatar = function (userId, avatarName) {
+    return db.executeSql(accountDb.updateAvatar, {
+        ID: userId,
+        Avatar: avatarName
+    }).then(function (result) {
+        return result.changedRows;
+    })
+};
+
+exports.isNickNameExist = function (userId, nickName) {
+    return db.executeSqlOne(accountDb.isNickNameExist, {ID: userId, NickName: nickName})
+        .then(function (result) {
+            return !!result.NickName;
+        })
+};
+
 function formatUserInfo(user) {
     if (user) {
         user.Avatar = helper.buildImageUrl(user.Avatar);
