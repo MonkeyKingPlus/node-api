@@ -21,31 +21,3 @@ router.get("/verify", function (req, res, next) {
         res.send(helper.buildErrorResult());
     }
 });
-
-router.get('/getAccessToken', function (req, res, next) {
-    var code = req.getWeixinCode();
-    if (!code) {
-        res.send(helper.buildErrorResult("Invalid Code"));
-    } else {
-        weixin.getAccessToken(code)
-            .then(function (token) {
-                return weixin.getUserInfo(token.access_token, token.openid);
-            })
-            .then(function (userInfo) {
-
-            })
-    }
-});
-
-router.get("/getAuthUrl", function (req, res, next) {
-    var url = weixin.getAuthUrlSync();
-    res.json(helper.buildSuccessResult(url));
-});
-
-router.get("/authCallback", function (req, res, next) {
-    console.log("========body=========")
-    console.log(req.body)
-    console.log("========query=========")
-    console.log(req.query)
-    res.json(helper.buildSuccessResult());
-});

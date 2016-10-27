@@ -22,12 +22,12 @@ router.get("/", function (req, res, next) {
 /**
  * @swagger
  * /config:
- *   post:
+ *   get:
  *     description: 获取基础配置
  *     tags: [Index]
  *     responses:
  *       default:
- *         description: error model
+ *         description: code != 0
  *         schema:
  *           type: object
  *           $ref: '#/definitions/ActionResult'
@@ -39,5 +39,5 @@ router.get("/", function (req, res, next) {
  */
 
 router.get("/config", function (req, res, next) {
-    res.json(helper.buildSuccessResult(config.mobile));
+    res.send(helper.buildSuccessResult(config.mobile));
 });
