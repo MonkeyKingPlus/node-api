@@ -33,7 +33,7 @@ module.exports = {
                     A.ID
                  FROM
                  CommentInfo A
-                 WHERE A.ArticleInfoID = @ArticleInfoID ORDER BY ID LIMIT 1
+                 WHERE A.ArticleInfoID = @ArticleInfoID ORDER BY ID LIMIT @Start , 1
              )
              LIMIT @Count
 
