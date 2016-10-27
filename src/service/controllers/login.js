@@ -4,10 +4,14 @@
  *   - name: Login
  *     description: 登录
  */
+var fs = require("fs");
+var path = require("path");
+var http = require('http');
 
 var express = require('express');
 var loginRouter = express.Router();
 var passport = require("passport");
+var uuid = require("node-uuid");
 
 var libs = require("../../libs");
 var authorizeBL = libs.business.authorization;
@@ -15,6 +19,7 @@ var accountBL = libs.business.account;
 var helper = libs.common.helper;
 var enums = libs.common.enums;
 var BusinessError = libs.common.businessError;
+var restClient = libs.common.restClient;
 var config = libs.common.config;
 
 module.exports = function (app) {
@@ -144,6 +149,14 @@ function loginForThirdPart(userInfo) {
             if (user) {
                 return user;
             } else {
+                var fileUrl = userInfo.Avatar;
+                var fileName = helper.getUuidWithoutHyphen() + path.extname(fileUrl);
+                if (fileUrl) {
+                    http.get(fileUrl, function (response) {
+                        response.pipe(fs.createWriteStream(path.resolve(config.app.uploadUrl, fileName)))
+                    });
+                }
+                userInfo.Avatar = fileName;
                 userInfo.IsThirdParty = enums.yn.yes;
                 return accountBL.createUser(userInfo);
             }

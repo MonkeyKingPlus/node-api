@@ -486,3 +486,7 @@ exports.buildQueryPageResult = function (results, pageInfo) {
         }
     };
 };
+
+exports.getUuidWithoutHyphen = function(){
+    return uuid.v4().replace(/-/g, '');
+}

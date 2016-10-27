@@ -56,13 +56,12 @@ router.post('/', function (req, res, next) {
     var content = req.body.Content;
     var fileName = req.body.FileName;
 
-
-    var saveFileName = uuid.v4() + path.extname(fileName);
+    var saveFileName = helper.getUuidWithoutHyphen() + path.extname(fileName);
     var buf = new Buffer(content, 'base64');
     if (buf.length <= 0 || buf.length > MAX_FILE_SIZE) {
         next(Error("最多只能上传5M的文件"));
     }
 
-    fs.writeFileSync(path.resolve(__dirname, "../../uploads/" + saveFileName), buf, {encoding: 'utf8'});
+    fs.writeFileSync(path.resolve(__dirname, "../public/uploads/" + saveFileName), buf, {encoding: 'utf8'});
     res.send(helper.buildSuccessResult(helper.buildImageUrl(saveFileName)));
 });

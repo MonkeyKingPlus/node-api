@@ -54,7 +54,7 @@ RestClient.prototype.post = function (url, data, options) {
     if (!options) options = {};
     options.url = url;
     options.json = data;
-  //  options.proxy =  regexIsInternalAddress.test(url) ? false : process.env.http_proxy;
+    //  options.proxy =  regexIsInternalAddress.test(url) ? false : process.env.http_proxy;
     options.proxy = false;
 
     var deferred = Q.defer();
@@ -71,18 +71,18 @@ RestClient.prototype.post = function (url, data, options) {
 
 };
 
-
-RestClient.prototype.postText = function(url, data, options) {
+RestClient.prototype.postText = function (url, data, options) {
     var deferred = Q.defer();
-    request.post({url:url,
-        body : data,
+    request.post({
+        url: url,
+        body: data,
         headers: {'Content-Type': 'text/plain'},
-        proxy : false
-}, function optionalCallback(err, response, body) {
+        proxy: false
+    }, function optionalCallback(err, response, body) {
         if (!err) {
             response.content = body;
             deferred.resolve(response);
-        }else{
+        } else {
             deferred.reject(err);
         }
     });
@@ -95,7 +95,7 @@ RestClient.prototype.put = function (url, data, options) {
     if (!options) options = {};
     options.url = url;
     options.json = data;
-  //  options.proxy =  regexIsInternalAddress.test(url) ? false : process.env.http_proxy;
+    //  options.proxy =  regexIsInternalAddress.test(url) ? false : process.env.http_proxy;
     options.proxy = false;
 
     var deferred = Q.defer();
@@ -129,16 +129,16 @@ RestClient.prototype.delete = function (url, options) {
     return deferred.promise;
 };
 
-RestClient.prototype._generateHeadersFromRequest = function(req){
+RestClient.prototype._generateHeadersFromRequest = function (req) {
     var authToken = null;
 
-    if(req.user){
+    if (req.user) {
         authToken = req.user.authToken;
     }
 
     // cookie里的at可能来自两个地方，mobile app访问wap页面带过来或者最初版本的微信看房生成
     // 微信看房现在已经废弃了生成at的做法，所以在微信里不用再从cookie里去取token
-    if(req.cookies["at"] && !isWeixin(req)){
+    if (req.cookies["at"] && !isWeixin(req)) {
         authToken = req.cookies["at"];
     }
 
@@ -150,7 +150,7 @@ RestClient.prototype._generateHeadersFromRequest = function(req){
         "user-agent": req.headers["user-agent"]
     };
 
-    if(req.weixin_type){
+    if (req.weixin_type) {
         headers.weixin_type = req.weixin_type;
     }
 
@@ -160,7 +160,7 @@ RestClient.prototype._generateHeadersFromRequest = function(req){
 exports = module.exports = function (options) {
     var client = new RestClient(options);
 
-    function generateMethod(objectToAttachMethod, methodName, methodConfig){
+    function generateMethod(objectToAttachMethod, methodName, methodConfig) {
         objectToAttachMethod[methodName] = (function (conf) {
 
             //第一个参数必须是req
@@ -181,9 +181,9 @@ exports = module.exports = function (options) {
                 if (!req.headers) {
                     throw "第一个参数必须是req";
                 }
-                
+
                 var options = {
-                    headers : this._generateHeadersFromRequest(req)
+                    headers: this._generateHeadersFromRequest(req)
                 };
 
                 for (; i < len; i++) {
@@ -226,12 +226,12 @@ exports = module.exports = function (options) {
         })(methodConfig);
     }
 
-    function discoverServiceConfig(objectToAttachMethod, config){
-        for(var key in config){
-            if(typeof config[key].url === "string"){
+    function discoverServiceConfig(objectToAttachMethod, config) {
+        for (var key in config) {
+            if (typeof config[key].url === "string") {
                 generateMethod(objectToAttachMethod, key, config[key]);
             }
-            else{
+            else {
                 var newObjectToAttachMethod = {};
                 objectToAttachMethod[key] = newObjectToAttachMethod;
                 discoverServiceConfig(newObjectToAttachMethod, config[key]);

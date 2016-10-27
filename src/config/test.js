@@ -17,7 +17,8 @@ var config = {
     "root": rootPath,
     "port": 3000,
     "app": {
-        "resourceUrl": "http://ec2-54-249-7-123.ap-northeast-1.compute.amazonaws.com:3000"
+        "resourceUrl": "http://ec2-54-249-7-123.ap-northeast-1.compute.amazonaws.com:3000/uploads",
+        "uploadUrl": path.normalize(rootPath + "/service/public/uploads")
     },
     "mobile": {},
     "cookieKeys": {
