@@ -24,3 +24,11 @@ router.get('/',  function(req, res, next){
         next(err);
     });
 });
+
+router.get('/:articleId', function(req, res, next){
+    articleBL.articleDetail(req.params.articleId).then(function(result){
+        res.send(helper.buildSuccessResult(result));
+    }).catch(function(err){
+        next(err);
+    });
+});

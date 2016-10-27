@@ -8,7 +8,7 @@ module.exports = {
              SELECT COUNT(1) as TotalCount FROM Article_Info;
 
              SELECT
-                i.*, d.Content
+                i.*
              FROM
              (
                  SELECT
@@ -26,10 +26,22 @@ module.exports = {
                         LIMIT @Start,1
                     ) LIMIT @Count
              ) i
+
+             */
+        })
+    },
+    "getArticleDetail": {
+        "db": "read",
+        sql: multiline(function () {
+            /*
+             SELECT
+                i.*, d.Content
+             FROM
+                Article_Info i
              INNER JOIN
-                Article_Detail d
-             ON
-                i.ArticleDetailID = d.ID
+                Article_Detail d ON i.ArticleDetailID = d.ID
+             WHERE
+                i.ID = ?
              */
         })
     }

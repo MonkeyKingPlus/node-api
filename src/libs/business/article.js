@@ -17,3 +17,9 @@ exports.articleList = function (pageSize, pageIndex) {
         return helper.buildQueryPageResult(results, pageInfo);
     });
 };
+
+exports.articleDetail = function (articleID) {
+    return db.executeSqlOne(articleDb.getArticleDetail, [articleID]).then(function(result){
+        return result;
+    });
+};
