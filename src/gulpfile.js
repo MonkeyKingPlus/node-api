@@ -108,4 +108,3 @@ function deployService(first) {
             logPath: logName
         })).pipe(exit());
 }
-

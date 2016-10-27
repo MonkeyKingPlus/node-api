@@ -9,6 +9,7 @@ module.exports = {
         logger                          : require("./common/logger"),
         weixin                          : require("./common/weixin"),
         db_config                       : requiredir("./db_conf"),
+        cache_provider                  : require("./common/cacheProvider"),
         restClient                      : require("./common/rest_client")(),
         businessError                   : require("./common/businesserror"),
         validatorExtender               : require("./common/validatorExtender")(),

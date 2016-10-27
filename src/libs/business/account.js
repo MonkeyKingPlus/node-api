@@ -5,6 +5,7 @@ var uuid = require("node-uuid");
 var accountDb = require('../db_conf/db_account.js');
 var db = require('../common/db_mysql_q.js')();
 var businessError = require('../common/businesserror');
+var helper = require('../common/helper');
 var logger = require('../common/logger')("service");
 var enums = require('../common/enums');
 
@@ -27,7 +28,10 @@ exports.login = function (loginName, password) {
 }
 
 exports.getUserInfo = function (id) {
-    return db.executeSqlOne(accountDb.getUserInfo, [id]);
+    return db.executeSqlOne(accountDb.getUserInfo, [id])
+        .then(function (user) {
+            return formatUserInfo(user);
+        });
 }
 
 exports.bindThirdPartUser = function () {
@@ -35,7 +39,10 @@ exports.bindThirdPartUser = function () {
 }
 
 exports.getUserInfoByIdentifier = function (identifier, identityType) {
-    return db.executeSqlOne(accountDb.getUserInfoByIdentifier, [identifier, identityType]);
+    return db.executeSqlOne(accountDb.getUserInfoByIdentifier, [identifier, identityType])
+        .then(function (user) {
+            return formatUserInfo(user);
+        });
 }
 
 /**
@@ -62,4 +69,12 @@ exports.createUser = function (userInfo) {
         logger.error(err);
         throw new businessError("用户创建不成功")
     });
+};
+
+function formatUserInfo(user) {
+    if (user) {
+        user.Avatar = helper.buildImageUrl(user.Avatar);
+    }
+
+    return user;
 }

@@ -19,9 +19,7 @@ var config = {
     "app": {
         "resourceUrl": "http://ec2-54-249-7-123.ap-northeast-1.compute.amazonaws.com:3000"
     },
-    "mobile": {
-
-    },
+    "mobile": {},
     "cookieKeys": {
         "authToken": {
             "name": "at",
@@ -86,11 +84,18 @@ var config = {
             }
         ]
     },
-    "cache": "memory",
     "caches": {
         "memory": {
             "name": "memory-cache",
             "timeout": timespan_hour
+        },
+        "levelup": {
+            "name": "levelup",
+            "path": "../caches/leveldb",
+            "leveloptions": {
+                "cacheSize": 8 * 1024 * 1024,
+                "keyEncoding": 'utf8'
+            }
         }
     },
     "cacheKeys": {

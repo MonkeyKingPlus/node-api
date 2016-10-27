@@ -233,26 +233,28 @@ exports.verifyRememberMeToken = function () {
             return done(null, false);
         }
         var cacheKey = generateRememberMeCacheKey(cookie.loginName, cookie.identifier);
-        cacheProvider.get(cacheKey)
-            .then(function (data) {
-                if (!data) {
-                    return done(null, false);
-                }
 
-                if (data.token !== cookie.token) {
-                    cacheProvider.del(cacheKey);
-                    return done(null, false);
-                }
+        Q().then(function () {
+            return cacheProvider.get(cacheKey);
+        }).then(function (data) {
+            if (!data) {
+                return done(null, false);
+            }
 
-                return accountBL.getUserInfo(data.userId)
-                    .then(function (user) {
-                        if (!user) {
-                            return done(null, false);
-                        }
+            if (data.token !== cookie.token) {
+                cacheProvider.del(cacheKey);
+                return done(null, false);
+            }
 
-                        return done(null, getSessionUserData(user));
-                    });
-            }).fail(function (err) {
+            return accountBL.getUserInfo(data.userId)
+                .then(function (user) {
+                    if (!user) {
+                        return done(null, false);
+                    }
+
+                    return done(null, getSessionUserData(user));
+                });
+        }).fail(function (err) {
             return done(err);
         });
     };
@@ -271,10 +273,10 @@ exports.updateRememberMeToken = function () {
 
         var remembermeCookie = generateRememberMeCookie(user.loginName, identifier, token, user.authToken);
         var cacheKey = generateRememberMeCacheKey(user.loginName, identifier);
-        cacheProvider.set(cacheKey, data)
-            .then(function () {
-                return done(null, remembermeCookie);
-            }).fail(function (err) {
+        Q().then(function () {
+            cacheProvider.set(cacheKey, data);
+            return done(null, remembermeCookie);
+        }).fail(function (err) {
             return done(err);
         });
     };
