@@ -487,7 +487,7 @@ exports.buildQueryPageResult = function (results, pageInfo) {
     return {
         ItemList: results[1],
         ListInfo: {
-            IsEnd: pageInfo.PageSize * (pageInfo.PageIndex - 1) >= totalCount,
+            IsEnd: pageInfo.PageSize * pageInfo.PageIndex >= totalCount,
             PageSize: pageInfo.PageSize,
             TotalCount: totalCount,
             PageIndex: pageInfo.PageIndex
