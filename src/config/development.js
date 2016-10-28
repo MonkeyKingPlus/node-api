@@ -87,15 +87,16 @@ var config = {
             }
         ]
     },
+    "currentCache": "levelup",
     "caches": {
         "memory": {
             "name": "memory-cache",
-            "timeout": timespan_hour
+            "expired_time": timespan_hour
         },
         "levelup": {
             "name": "levelup",
             "path": "../caches/leveldb",
-            "leveloptions": {
+            "leveluptions": {
                 "cacheSize": 8 * 1024 * 1024,
                 "keyEncoding": 'utf8'
             }

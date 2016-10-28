@@ -6,7 +6,7 @@ var md5 = require("crypto-md5");
 var _ = require('underscore');
 
 var settings = require("../common/config");
-var cacheProvider = require("../common/cacheProvider")(settings.caches.memory);
+var cacheProvider = require("../common/cacheProvider")();
 var helper = require('../common/helper');
 var businessError = require('../common/businesserror');
 var enums = require('../common/enums');

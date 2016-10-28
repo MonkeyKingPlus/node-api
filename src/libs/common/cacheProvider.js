@@ -1,18 +1,16 @@
 var util = require("util");
 
 var Q = require("q");
-var memoryCache = require("memory-cache");
-
 var config = require("./config.js");
 
 /**
  * 缓存Provider,支持set,get和del,其中get返回的是promise,set和del无返回值
- * @param options
+ * @param options 默认为config.currentCache,也可以选择所需要的config.caches.memory/config.caches.levelup and so on.
  * @constructor
  */
 function CacheProvider(options) {
     if (!options) {
-        options = config.caches.memory
+        options = config.caches[config.currentCache];
     }
     this.strategy = getCacheStrategy(options);
 }
@@ -29,53 +27,35 @@ CacheProvider.prototype.del = function (key) {
     return this.strategy.del(key);
 };
 
-function CacheStrategy(options) {
-    this.options = options;
+function CacheStrategy(instance) {
+    if (!instance) {
+        throw new Error("instance can't be null");
+    }
+    this.instance = instance;
 }
-CacheStrategy.prototype.set = function (key, value) {
-    throw new Error("method 'set' is not implemented");
+CacheStrategy.prototype.set = function (key, value, expired_time) {
+    this.instance.put(key, value, expired_time);
 };
-
 CacheStrategy.prototype.get = function (key) {
-    throw new Error("method 'get' is not implemented");
-};
-
-CacheStrategy.prototype.del = function (key) {
-    throw new Error("method 'del' is not implemented");
-};
-
-function MemoryCacheStrategy(options) {
-    CacheStrategy.call(this, options);
-}
-
-util.inherits(MemoryCacheStrategy, CacheStrategy);
-MemoryCacheStrategy.prototype.set = function (key, value) {
-    memoryCache.put(key, value, this.options.timeout);
-};
-MemoryCacheStrategy.prototype.get = function (key) {
+    var self = this;
     return Q().then(function () {
-        return memoryCache.get(key);
+        return self.instance.get(key);
     });
 };
-MemoryCacheStrategy.prototype.del = function (key) {
-    memoryCache.del(key);
+CacheStrategy.prototype.del = function (key) {
+    this.instance.del(key);
 };
+
+
+function MemoryCacheStrategy(options) {
+    CacheStrategy.call(this, require("memory-cache"));
+}
+util.inherits(MemoryCacheStrategy, CacheStrategy);
 
 function LevelUpStrategy(options) {
-    CacheStrategy.call(this, options);
-    this.levelup = require("./cacheDb/levelup")(options.path, options.leveloptions);
+    CacheStrategy.call(this, require("./cacheDb/levelup")(options.path, options.leveluptions));
 }
-
 util.inherits(LevelUpStrategy, CacheStrategy);
-LevelUpStrategy.prototype.set = function (key, value) {
-    this.levelup.put(key, value);
-};
-LevelUpStrategy.prototype.get = function (key) {
-    return this.levelup.get(key);
-};
-LevelUpStrategy.prototype.del = function (key) {
-    this.levelup.del(key);
-};
 
 function getCacheStrategy(options) {
     switch (options.name) {

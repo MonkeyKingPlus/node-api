@@ -1,8 +1,8 @@
 'use strict';
-var db = require('mysql');
-var Q = require('q');
 var util = require('util');
 
+var db = require('mysql');
+var Q = require('q');
 var _ = require("underscore");
 
 var logger = require("./logger")("db_mysql_q");

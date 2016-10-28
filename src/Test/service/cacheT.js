@@ -2,11 +2,19 @@ var util = require("util");
 
 var assert = require('assert');
 
-var libs = require("../../libs");
-var config = libs.common.config;
-var cacheProvider = libs.common.cache_provider;
+//var libs = require("../../libs");
+var config = require("../../libs/common/config");
+var cacheProvider = require("../../libs/common/cacheProvider");
 
-var levelup = cacheProvider(config.caches.levelup);
+var leveldbConfig = {
+    "name": "levelup",
+    "path": "../caches/leveldbtest",
+    "leveloptions": {
+        "cacheSize": 8 * 1024 * 1024,
+        "keyEncoding": 'utf8'
+    }
+};
+var levelup = cacheProvider(leveldbConfig);
 var memoCache = cacheProvider(config.caches.memory);
 
 var testStrKey = "t_str";

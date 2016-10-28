@@ -4,7 +4,7 @@ var sha1 = require('node-sha1');
 
 var restClient = require("./rest_client")();
 var appConfig = require("../common/config");
-var cacheProvider = require("../common/cacheProvider")(appConfig.caches.memory);
+var cacheProvider = require("../common/cacheProvider")();
 
 var token = "qwe123QWEasdASD";
 

@@ -29,6 +29,7 @@ module.exports = {
              A.IdentityType,
              A.IsThirdParty,
              B.NickName,
+             B.Gender,
              B.Avatar,
              B.InDate
              FROM User_Auth A
@@ -48,6 +49,7 @@ module.exports = {
              A.IdentityType,
              A.IsThirdParty,
              B.NickName,
+             B.Gender,
              B.Avatar,
              B.InDate
              FROM User_Auth A
@@ -62,7 +64,7 @@ module.exports = {
         "db": "write",
         sql: multiline(function () {
             /*
-             insert into User_Info(Status,NickName,Avatar) values(@Status,@NickName,@Avatar)
+             insert into User_Info(Status,NickName,Gender,Avatar) values(@Status,@NickName,@Gender,@Avatar)
              */
         })
     },

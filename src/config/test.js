@@ -93,6 +93,7 @@ var config = {
             }
         ]
     },
+    "currentCache": "levelup",
     "caches": {
         "memory": {
             "name": "memory-cache",
@@ -101,7 +102,7 @@ var config = {
         "levelup": {
             "name": "levelup",
             "path": "../caches/leveldb",
-            "leveloptions": {
+            "leveluptions": {
                 "cacheSize": 8 * 1024 * 1024,
                 "keyEncoding": 'utf8'
             }
