@@ -141,32 +141,28 @@ function queryTran(tran, sqlObj) {
 }
 
 function buildSqlObjectValues(sqlObject, values) {
+    var newSqlObject = _.clone(sqlObject);
+
     if (!values) {
-        return sqlObject;
+        return newSqlObject;
     }
 
     if (values instanceof Array) {
-        return _.extend(sqlObject, {values: values});
+        return _.extend(newSqlObject, {values: values});
     }
 
-    sqlObject.values = [];
+    newSqlObject.values = [];
 
     var matches = sqlObject.sql.match(/@[A-Z0-9\_]*/img);
+
     if (matches && matches.length > 0) {
         for (var i = 0; i < matches.length; i++) {
-            sqlObject.sql = sqlObject.sql.replace(matches[i], '?');
-            sqlObject.values.push(values[matches[i].substring(1)]);
+            newSqlObject.sql = newSqlObject.sql.replace(matches[i], '?');
+            newSqlObject.values.push(values[matches[i].substring(1)]);
         }
     }
-    //
-    //var parameters = sqlObject.inputParams;
-    //if (parameters && parameters.length > 0) {
-    //    for (var i = 0; i < parameters.length; i++) {
-    //        sqlObject.sql = sqlObject.sql.replace('@' + parameters[i].name, '?');
-    //        sqlObject.values.push(values[parameters[i].name]);
-    //    }
-    //}
-    return sqlObject;
+
+    return newSqlObject;
 }
 
 function SqlClient() {
