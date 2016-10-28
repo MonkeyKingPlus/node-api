@@ -1,6 +1,6 @@
 module.exports = {
     Success: 0,
-    Fail: 1,
+    Error: 1,
     LoginInfoMiss: 100,
     LoginInfoNotMatch: 101,
     NickNameDuplicate: 103

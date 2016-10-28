@@ -11,9 +11,7 @@ var LocalStrategy = require('passport-local').Strategy;
 var libs = require("../libs");
 var userRecoveryStrategy = libs.common.passport_user_recovery_strategy;
 var weixinStrategy = libs.common.passport_weixin_strategy;
-var weixin_user_initializer = libs.middleware.weixin_user_initializer;
 var config = libs.common.config;
-var helper = libs.common.helper;
 var middleware = libs.middleware;
 var auth = libs.business.authorization;
 var logger = libs.common.logger("service");
@@ -29,6 +27,7 @@ global.ENV = app.locals.ENV = env;
 global.ENV_DEVELOPMENT = app.locals.ENV_DEVELOPMENT = env == 'development';
 
 app.use(timeout('90s'));
+app.use(express.static(config.root + '/uploads'));
 app.use(express.static(config.root + '/service/public', {
     maxAge: global.ENV_DEVELOPMENT ? 0 : 30 * 24 * 3600 * 1000,
     etag: false
@@ -56,6 +55,7 @@ app.use(libs.middleware.express_extender());
 app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("access-control-allow-methods", "GET, POST");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, x-mkp-authentication,x-weixin-code");
     res.header("Access-Control-Allow-Headers", "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, x-mkp-authentication,x-weixin-code");
     next();
 });

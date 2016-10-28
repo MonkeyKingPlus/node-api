@@ -37,14 +37,21 @@ gulp.task('s', function () {
     });
 });
 
+//gulp.task('deploy-service-es6', function () {
+//    gulp.src(['*json', 'config/common/*.json', 'service/public/**', "swagger/models/*.json"], {base: './'})
+//        .pipe(gulp.dest('dist'));
+//    //var deploySrc = ['dist/**'];
+//    //deployService(deploySrc);
+//});
+
 gulp.task('deploy-service', function () {
-    deployService();
+    deployService(["*js", "*json", "config/**", "libs/**", "service/**", "swagger/models/*.json"]);//只发swagger下的json文件
 });
 gulp.task('deploy-service-first', function () {
-    deployService(true);
+    deployService(["*js", "*json", "config/**", "libs/**", "service/**", "swagger/**"]);
 });
 
-function deployService(first) {
+function deployService(source) {
     var deployConfig = {
         test: {
             servers: [{
@@ -79,12 +86,11 @@ function deployService(first) {
     var env = argv.env || "test";
     cfg = deployConfig[env];
     cfg.isDevelopment = false;
-    cfg.deploySrc = first ? ["*js", "*json", "config/**", "libs/**", "service/**", "swagger/**"] :
-        ["*js", "*json", "config/**", "libs/**", "service/**", "swagger/models/*.json"];//只发swagger下的json文件
+    cfg.deploySrc = source;
     cfg.deployPath = cfg.deployPath + "/srv";
     cfg.deployServers = cfg.servers;
 
-    var envCfg = getEnvConf("service")
+    var envCfg = getEnvConf("service");
     var logName = "deploy-" + envCfg.type;
 
     return gulp.src(cfg.deploySrc, {base: './'})
@@ -104,7 +110,8 @@ function deployService(first) {
                 'npm install --production',
                 'pm2 startOrRestart pm2-service-' + env + '.json',
                 "mv service/public/faq_1.html service/public/faq.html",
-                'sleep 15'],
+                'sleep 15'
+            ],
             logPath: logName
         })).pipe(exit());
 }

@@ -1,7 +1,7 @@
 var helper = require("./helper");
 
 module.exports = function(){
-    expressValidatorExtender = {};
+    var expressValidatorExtender = {};
 
     expressValidatorExtender.extend = function(validator){
         validator.extend("isCellPhoneValid", function(cellPhone){
@@ -12,7 +12,7 @@ module.exports = function(){
             return true;
             /*
             password = (password || "").trim();
-            
+
             return password.length >= 6 && password.length <= 16;
             */
         });

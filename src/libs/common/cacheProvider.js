@@ -1,6 +1,6 @@
 var util = require("util");
 
-var Q = require("q");
+//var Q = require("q");
 var config = require("./config.js");
 
 /**

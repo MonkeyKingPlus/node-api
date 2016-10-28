@@ -18,7 +18,7 @@ var config = {
     "port": 3000,
     "app": {
         "resourceUrl": "http://localhost:3000/uploads",
-        "uploadUrl": path.normalize(rootPath + "/service/public/uploads")
+        "uploadUrl": path.normalize(rootPath + "/uploads")
     },
     "mobile": {
         returnCode: require('./common/return_code.js')
