@@ -1,5 +1,5 @@
 {
-  "name": "sotaoWebSite",
+  "name": "monkeyplus",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -58,7 +58,6 @@
     "gulp-debug": "^2.0.1",
     "gulp-declare": "^0.3.0",
     "gulp-exit": "0.0.2",
-    "gulp-handlebars": "^4.0.0",
     "gulp-if": "^1.2.5",
     "gulp-livereload": "~3.8.0",
     "gulp-nodemon": "~2.0.6",
